@@ -1,5 +1,5 @@
 import React from 'react';
-import Svg from './svg';
+import NoPhotoIcon from './NoPhotoIcon';
 
 const SearchPerson = ({ queries, onClick }) => {
   return (
@@ -17,14 +17,22 @@ const SearchPerson = ({ queries, onClick }) => {
             />
           ) : (
             <div className="flex border-2 items-center w-max mx-auto justify-center">
-              <Svg />
+              <NoPhotoIcon />
             </div>
           )}
-          <div className="text-xl">{query.name}</div>
+          <div className="text-xl ">{query.name}</div>
           <div>
-            <div className="text-lg">Known for:</div>
-            {query.known_for?.map((knownFor) => (
-              <div key={knownFor.id}>{knownFor.title}</div>
+            <div className="text-sm  sm:text-base">
+              <strong>Known for:</strong>
+            </div>
+            {query.known_for?.map((knownFor, index) => (
+              <div className="text-xs sm:text-sm" key={knownFor.id}>
+                <i>
+                  {query?.known_for.length - 1 === index
+                    ? knownFor.title
+                    : `${knownFor.title || knownFor.name}, `}
+                </i>
+              </div>
             ))}
           </div>
         </div>

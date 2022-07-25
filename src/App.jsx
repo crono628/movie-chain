@@ -50,13 +50,13 @@ const App = () => {
         Movie
         <ChainIcon /> Chain
       </div>
-      <form className="flex flex-col " onSubmit={handleSearch}>
-        <input ref={inputRef} />
+      <form className="flex flex-col mx-5 " onSubmit={handleSearch}>
+        <input className="w-full" ref={inputRef} />
         <button type="reset" onClick={() => setQueries(null)}>
           clear
         </button>
       </form>
-      <div className="grid grid-cols-4 gap-20">
+      <div className="grid grid-cols-3 sm:grid-cols-4 gap-5">
         <SearchPerson onClick={handleClick} queries={queries} />
       </div>
     </div>
