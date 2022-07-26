@@ -2,9 +2,9 @@ import React from 'react';
 
 const Choice = ({ onChange }) => {
   return (
-    <div>
-      <fieldset className="border border-solid border-gray-300 p-3 flex flex-col">
-        <legend className="text-base">Choose</legend>
+    <>
+      <fieldset className="border border-solid border-gray-300 p-3 flex flex-col rounded-xl">
+        <legend className="text-base w-min">Choose</legend>
         <div className="flex justify-around ">
           <div>
             <label htmlFor="movie">Movie</label>
@@ -31,7 +31,7 @@ const Choice = ({ onChange }) => {
           </div>
         </div>
       </fieldset>
-    </div>
+    </>
   );
 };
 

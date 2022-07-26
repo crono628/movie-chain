@@ -12,15 +12,16 @@ const SearchMovie = ({ queries, onClick }) => {
         >
           {query?.backdrop_path ? (
             <img
-              id={query.id}
+              className="rounded-xl"
+              data-id={query.id}
               src={`https://image.tmdb.org/t/p/w1280${query?.backdrop_path}`}
             />
           ) : (
-            <div className="flex border-2 items-center w-max mx-auto justify-center">
+            <div className="flex border-2 rounded-xl items-center h-32 mx-auto justify-center">
               <NoPhotoIcon />
             </div>
           )}
-          <div className="text-xl ">{query.title}</div>
+          <div className="text-base">{query.title}</div>
         </div>
       ))}
     </>
