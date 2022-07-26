@@ -8,7 +8,7 @@ const SearchPerson = ({ queries, onClick }) => {
         <div
           onClick={onClick}
           key={query.id}
-          className="w-full h-full text-sm m-2"
+          className="text-sm m-2 flex flex-col border-2 rounded-xl"
         >
           {query.profile_path ? (
             <img
@@ -19,16 +19,16 @@ const SearchPerson = ({ queries, onClick }) => {
           ) : (
             <div
               data-id={query.id}
-              className="flex max-h-56  border-2 items-center w-max mx-auto justify-center"
+              className="flex-1 h-full rounded-xl  mx-auto"
             >
               <NoPhotoIcon data={query.id} />
             </div>
           )}
-          <div className="text-xl " data-id={query.id}>
+          <div className="text-lg p-2 " data-id={query.id}>
             {query.name}
           </div>
-          <div>
-            <div className="text-sm  sm:text-base">
+          {/* <Disclosure.Panel>
+            <div className="text-sm sm:text-base mt-1 flex-1">
               <strong>Known for:</strong>
             </div>
             {query.known_for?.map((knownFor, index) => (
@@ -40,7 +40,7 @@ const SearchPerson = ({ queries, onClick }) => {
                 </i>
               </div>
             ))}
-          </div>
+          </Disclosure.Panel> */}
         </div>
       ))}
     </>
