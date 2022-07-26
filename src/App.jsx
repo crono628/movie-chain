@@ -4,11 +4,15 @@ import ChainIcon from './components/ChainIcon';
 import SearchMovie from './components/SearchResults/SearchMovie';
 import Form from './components/Form/Form';
 import config from './config';
+import { Route, Routes, useNavigate } from 'react-router-dom';
+import MovieDetail from './components/Detail/MovieDetail';
+import PersonDetail from './components/Detail/PersonDetail';
 
 const App = () => {
   const [queries, setQueries] = useState([]);
-  const [choice, setChoice] = useState({});
+  const [choice, setChoice] = useState(null);
   const [radio, setRadio] = useState({ movie: true, person: false });
+  const navigate = useNavigate();
   const inputRef = useRef('');
 
   async function getQueries(page = 1) {
@@ -39,6 +43,9 @@ const App = () => {
   };
 
   const handleChoice = (e) => {
+    handleClear();
+    setChoice(e.target.dataset.id);
+    navigate(`/${radio.movie ? 'movie-detail' : 'person-detail'}`);
     console.log(e.target.dataset.id);
   };
 
@@ -52,6 +59,8 @@ const App = () => {
   };
 
   const handleClear = () => {
+    navigate(`/`);
+    setChoice(null);
     inputRef.current.value = '';
     setQueries(null);
   };
@@ -63,6 +72,7 @@ const App = () => {
         <ChainIcon /> Chain
       </div>
       <Form
+        path="/"
         onSubmit={handleSearch}
         onChange={handleChange}
         onClick={handleClear}
@@ -76,6 +86,13 @@ const App = () => {
           <SearchMovie onClick={handleChoice} queries={queries} />
         )}
       </div>
+      <Routes>
+        <Route path="movie-detail" element={<MovieDetail />} />
+        <Route
+          path="person-detail"
+          element={<PersonDetail choice={choice} />}
+        />
+      </Routes>
     </div>
   );
 };
