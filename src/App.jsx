@@ -50,7 +50,7 @@ const App = () => {
   const handleChoice = async (e) => {
     setChoice(e.target.dataset.id);
     setQueries(null);
-    navigate(`/${radio.movie ? 'movie-detail' : 'person-detail'}`);
+    navigate(radio.movie ? 'movie-detail' : 'person-detail');
     // console.log(e.target.dataset.id);
   };
 
@@ -72,7 +72,10 @@ const App = () => {
 
   return (
     <div className="p-6 text-4xl w-screen  bg-indigo-400 flex justify-center items-center flex-col">
-      <div className="flex items-center pb-5">
+      <div
+        onClick={() => navigate('/')}
+        className="flex items-center pb-5 cursor-pointer"
+      >
         Movie
         <ChainIcon /> Chain
       </div>

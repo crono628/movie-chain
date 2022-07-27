@@ -7,20 +7,23 @@ const PersonDetail = ({ choice, queries }) => {
   const [info, setInfo] = useState(null);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
-    if (choice) {
-      const fetchData = async () => {
+    setLoading(true);
+    let dataArr = [];
+    const fetchData = async () => {
+      try {
         const response = await fetch(
           `${config.baseUrl}person/${choice}?api_key=${config.api}`
         );
         const data = await response.json();
-        setPerson(data);
+        dataArr = data;
         setLoading(false);
-      };
-      return () => fetchData();
-    } else {
-      setLoading(true);
-    }
-  }, [choice]);
+      } catch (error) {
+        console.log(error);
+      }
+      setPerson(dataArr);
+    };
+    return () => fetchData();
+  }, [choice, queries]);
 
   useEffect(() => {
     if (queries) {
@@ -30,19 +33,19 @@ const PersonDetail = ({ choice, queries }) => {
         }
       });
     }
-  }, [queries]);
+  }, [choice, queries]);
 
   return (
     !loading && (
       <>
-        {info.profile_path ? (
+        {info?.profile_path ? (
           <img
             className="w-1/4 rounded-xl mt-7"
             src={`https://image.tmdb.org/t/p/w1280${info?.profile_path}`}
           />
         ) : (
           <div className=" w-1/4 h-1/4 rounded-xl  mx-auto my-12">
-            <NoPhotoIcon data={info.id} />
+            <NoPhotoIcon data={info?.id} />
           </div>
         )}
         <div className="mt-5 my-3 text-4xl">{person.name}</div>
