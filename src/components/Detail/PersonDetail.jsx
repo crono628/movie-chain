@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Outlet } from 'react-router-dom';
 import config from '../../config';
 import NoPhotoIcon from '../SearchResults/NoPhotoIcon';
 
@@ -22,7 +23,7 @@ const PersonDetail = ({ choice, queries }) => {
       }
       setPerson(dataArr);
     };
-    return () => fetchData();
+    fetchData();
   }, [choice, queries]);
 
   useEffect(() => {

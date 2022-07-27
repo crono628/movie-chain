@@ -4,7 +4,7 @@ import Choice from './Choice';
 const Form = forwardRef((props, ref) => {
   const { onChange, onSubmit, onClick } = props;
   return (
-    <form className="flex flex-col mx-5 " onSubmit={onSubmit}>
+    <form className="flex flex-col mx-5 h-56" onSubmit={onSubmit}>
       <Choice onChange={onChange} />
       <input
         placeholder="Search"
