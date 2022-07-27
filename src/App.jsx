@@ -7,9 +7,11 @@ import config from './config';
 import { Route, Routes, useNavigate } from 'react-router-dom';
 import MovieDetail from './components/Detail/MovieDetail';
 import PersonDetail from './components/Detail/PersonDetail';
+import { filterQuery } from './components/Helpers/filterQuery';
 
 const App = () => {
-  const [queries, setQueries] = useState([]);
+  const [queries, setQueries] = useState(null);
+  const [forChoice, setForChoice] = useState(null);
   const [choice, setChoice] = useState(null);
   const [radio, setRadio] = useState({ movie: true, person: false });
   const navigate = useNavigate();
@@ -31,6 +33,7 @@ const App = () => {
       const responseData = await response.json();
       data = responseData?.results;
       setQueries(data);
+      setForChoice(data);
     } catch (error) {
       console.log(error);
     }
@@ -39,14 +42,16 @@ const App = () => {
 
   const handleSearch = (e) => {
     e.preventDefault();
+    navigate('/');
+    setChoice(null);
     getQueries();
   };
 
-  const handleChoice = (e) => {
-    handleClear();
+  const handleChoice = async (e) => {
     setChoice(e.target.dataset.id);
+    setQueries(null);
     navigate(`/${radio.movie ? 'movie-detail' : 'person-detail'}`);
-    console.log(e.target.dataset.id);
+    // console.log(e.target.dataset.id);
   };
 
   const handleChange = (e) => {
@@ -58,7 +63,7 @@ const App = () => {
     handleClear();
   };
 
-  const handleClear = () => {
+  const handleClear = async () => {
     navigate(`/`);
     setChoice(null);
     inputRef.current.value = '';
@@ -90,7 +95,7 @@ const App = () => {
         <Route path="movie-detail" element={<MovieDetail />} />
         <Route
           path="person-detail"
-          element={<PersonDetail choice={choice} />}
+          element={<PersonDetail queries={forChoice} choice={choice} />}
         />
       </Routes>
     </div>
