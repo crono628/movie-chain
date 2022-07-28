@@ -1,75 +1,46 @@
-import React, { useEffect, useState } from 'react';
-import { Outlet } from 'react-router-dom';
-import config from '../../config';
+import React from 'react';
 import NoPhotoIcon from '../SearchResults/NoPhotoIcon';
 
-const PersonDetail = ({ choice, queries }) => {
-  const [person, setPerson] = useState(null);
-  const [info, setInfo] = useState(null);
-  const [loading, setLoading] = useState(true);
-  useEffect(() => {
-    setLoading(true);
-    let dataArr = [];
-    const fetchData = async () => {
-      try {
-        const response = await fetch(
-          `${config.baseUrl}person/${choice}?api_key=${config.api}`
-        );
-        const data = await response.json();
-        dataArr = data;
-        setLoading(false);
-      } catch (error) {
-        console.log(error);
-      }
-      setPerson(dataArr);
-    };
-    fetchData();
-  }, [choice, queries]);
-
-  useEffect(() => {
-    if (queries) {
-      queries.map((query) => {
-        if (query.id == choice) {
-          setInfo(query);
-        }
-      });
-    }
-  }, [choice, queries]);
+const PersonDetail = ({ value }) => {
+  const { details, queries, loading } = value;
+  // console.log(details);
+  // console.log(queries);
+  let known = queries.find((item) => item.id === details.id);
 
   return (
-    !loading && (
+    loading === false && (
       <>
-        {info?.profile_path ? (
+        {details?.profile_path ? (
           <img
             className="w-1/4 rounded-xl mt-7"
-            src={`https://image.tmdb.org/t/p/w1280${info?.profile_path}`}
+            src={`https://image.tmdb.org/t/p/w1280${details?.profile_path}`}
           />
         ) : (
           <div className=" w-1/4 h-1/4 rounded-xl  mx-auto my-12">
-            <NoPhotoIcon data={info?.id} />
+            <NoPhotoIcon data={queries?.id} />
           </div>
         )}
-        <div className="mt-5 my-3 text-4xl">{person.name}</div>
+        <div className="mt-5 my-3 text-4xl">{details.name}</div>
         <div>
-          <div className="text-sm sm:text-base mt-1 flex-1 text-center">
+          {/* <div className="text-sm sm:text-base mt-1 flex-1 text-center">
             <strong>Known for:</strong>
           </div>
           <div>
-            {info?.known_for.map((knownFor, index) => (
+            {known?.known_for?.map((knownFor, index) => (
               <div className="text-xs sm:text-sm" key={knownFor.id}>
                 <i>
-                  {info?.known_for.length - 1 === index
+                  {queries?.known_for.length - 1 === index
                     ? knownFor.title || knownFor.name
                     : `${knownFor.title || knownFor.name}, `}
                 </i>
               </div>
             ))}
-          </div>
+          </div> */}
         </div>
         <div className="my-3 text-2xl">
-          {person.place_of_birth ? `Born: ${person.place_of_birth}` : null}
+          {details.place_of_birth ? `Born: ${details.place_of_birth}` : null}
         </div>
-        <div className="my-3 text-xl">{person.biography}</div>
+        <div className="my-3 text-xl">{details.biography}</div>
       </>
     )
   );
