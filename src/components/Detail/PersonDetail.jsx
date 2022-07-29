@@ -8,7 +8,8 @@ const PersonDetail = ({ value }) => {
   let known = queries.find((item) => item.id === details.id);
 
   return (
-    loading === false && (
+    !loading &&
+    details !== null && (
       <>
         {details?.profile_path ? (
           <img
@@ -20,7 +21,7 @@ const PersonDetail = ({ value }) => {
             <NoPhotoIcon data={queries?.id} />
           </div>
         )}
-        <div className="mt-5 my-3 text-4xl">{details.name}</div>
+        <div className="mt-5 my-3 text-4xl">{details?.name}</div>
         <div>
           {/* <div className="text-sm sm:text-base mt-1 flex-1 text-center">
             <strong>Known for:</strong>

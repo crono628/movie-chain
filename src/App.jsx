@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useReducer } from 'react';
 import { Route, Routes, useNavigate } from 'react-router-dom';
 import MovieDetail from './components/Detail/MovieDetail';
 import PersonDetail from './components/Detail/PersonDetail';
@@ -6,18 +6,22 @@ import Home from './components/Home';
 import SearchMovie from './components/SearchResults/SearchMovie';
 import SearchPerson from './components/SearchResults/SearchPerson';
 import config from './config';
+import { reducer, initialState } from './components/Functions/reducer';
 
 const App = () => {
   const [queries, setQueries] = useState(null);
   const [details, setDetails] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [radio, setRadio] = useState({ movie: true, person: false });
+  // const [radio, setRadio] = useState({ movie: true, person: false });
+
+  const [state, dispatch] = useReducer(reducer, initialState);
+
   const navigate = useNavigate();
   const inputRef = useRef('');
 
   async function getQueries(page = 1) {
     let data = [];
-    const { movie } = radio;
+    const { movie } = state.radio;
     const { searchMovie, searchPerson, api, sortBy, baseUrl } = config;
     try {
       const response = await fetch(
@@ -35,7 +39,7 @@ const App = () => {
   }
 
   async function getDetails(choice) {
-    const { movie } = radio;
+    const { movie } = state.radio;
     const { api, baseUrl } = config;
     setLoading(true);
     let dataArr = [];
@@ -54,31 +58,36 @@ const App = () => {
   }
 
   const handleSubmit = async (e) => {
+    const { movie } = state.radio;
     e.preventDefault();
     try {
       await getQueries();
-      radio.movie ? navigate('/search-movie') : navigate('/search-person');
-    } catch {
-      console.log('error');
+      movie ? navigate('/search-movie') : navigate('/search-person');
+    } catch (error) {
+      console.log(error);
     }
   };
 
   const handleChoice = async (e) => {
+    const { movie } = state.radio;
     try {
       await getDetails(e.target.dataset.id);
-      radio.movie ? navigate('/movie-detail') : navigate('/person-detail');
-    } catch {
-      console.log('error');
+      movie ? navigate('/movie-detail') : navigate('/person-detail');
+    } catch (error) {
+      console.log(error);
     }
   };
 
   const handleChange = (e) => {
-    let copy = { ...radio };
+    let copy = state.radio;
     Object.keys(copy).forEach((key) => {
       copy[key] = false;
     });
-    setRadio({ ...copy, [e.target.value]: true });
-    handleClear();
+    dispatch({
+      type: 'update',
+      payload: { key: 'radio', value: { ...copy, [e.target.value]: true } },
+    }),
+      handleClear();
   };
 
   const handleClear = () => {
@@ -100,6 +109,7 @@ const App = () => {
     queries,
   };
 
+  // console.log(state);
   return (
     <Routes>
       <Route
