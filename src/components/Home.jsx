@@ -8,7 +8,7 @@ const Home = forwardRef((props, ref) => {
   const { handleChange, handleClear, handleSubmit } = props.value;
 
   return (
-    <div className="p-6 text-4xl mx-auto max-w-screen-md bg-indigo-400 flex justify-center items-center flex-col">
+    <div className="p-6 text-4xl flex justify-center items-center flex-col">
       <div
         onClick={() => navigate('/')}
         className="flex items-center pb-5 cursor-pointer"

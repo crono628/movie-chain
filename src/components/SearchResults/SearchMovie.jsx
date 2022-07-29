@@ -3,8 +3,8 @@ import NoPhotoIcon from './NoPhotoIcon';
 
 const SearchMovie = ({ queries, onClick }) => {
   return (
-    <div className="p-6 text-4xl  bg-indigo-400 flex justify-center items-center flex-col">
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5 px-5">
+    <div className="p-3 text-4xl flex justify-center items-center flex-col">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-1">
         {queries?.map((query) => (
           <div
             key={query.id}

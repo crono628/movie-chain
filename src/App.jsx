@@ -7,6 +7,7 @@ import SearchMovie from './components/SearchResults/SearchMovie';
 import SearchPerson from './components/SearchResults/SearchPerson';
 import config from './config';
 import { reducer, initialState } from './components/Functions/reducer';
+import Footer from './components/Footer';
 
 const App = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -35,8 +36,7 @@ const App = () => {
     const { movie } = state.radio;
     const { api, baseUrl, personCombinedCredits, movieCredits } = config;
     dispatch({ type: 'update', payload: { key: 'loading', value: true } });
-    let dataArr = [];
-    let creditArr = [];
+    let dataDetails, dataCredits;
     try {
       const response = await fetch(
         `${baseUrl}${movie ? 'movie' : 'person'}/${choice}?api_key=${api}`
@@ -48,13 +48,19 @@ const App = () => {
       );
       const data = await response.json();
       const creditData = await creditResponse.json();
-      dataArr = data;
-      creditArr = creditData;
+      dataDetails = data;
+      dataCredits = creditData;
     } catch (error) {
       console.log(error);
     }
-    dispatch({ type: 'update', payload: { key: 'details', value: dataArr } });
-    dispatch({ type: 'update', payload: { key: 'credits', value: creditArr } });
+    dispatch({
+      type: 'update',
+      payload: { key: 'details', value: dataDetails },
+    });
+    dispatch({
+      type: 'update',
+      payload: { key: 'credits', value: dataCredits },
+    });
     dispatch({ type: 'update', payload: { key: 'loading', value: false } });
   }
 
@@ -107,36 +113,42 @@ const App = () => {
   console.log(state);
 
   return (
-    <Routes>
-      <Route
-        exact
-        path="/"
-        element={<Home ref={inputRef} value={handleValue} />}
-      >
+    <div className="mx-auto max-w-screen-lg flex flex-col h-screen justify-between ">
+      <Routes>
         <Route
-          path="/search-person"
-          element={
-            <SearchPerson queries={state.queries} onClick={handleChoice} />
-          }
-        />
-        <Route path="/person-detail" element={<PersonDetail value={state} />} />
-        <Route
-          path="search-movie"
-          element={
-            <SearchMovie queries={state.queries} onClick={handleChoice} />
-          }
-        />
-        <Route path="movie-detail" element={<MovieDetail value={state} />} />
-        <Route
-          path="*"
-          element={
-            <div style={{ padding: '1rem' }}>
-              <p>There's nothing here!</p>
-            </div>
-          }
-        />
-      </Route>
-    </Routes>
+          exact
+          path="/"
+          element={<Home ref={inputRef} value={handleValue} />}
+        >
+          <Route
+            path="/search-person"
+            element={
+              <SearchPerson queries={state.queries} onClick={handleChoice} />
+            }
+          />
+          <Route
+            path="/person-detail"
+            element={<PersonDetail value={state} />}
+          />
+          <Route
+            path="search-movie"
+            element={
+              <SearchMovie queries={state.queries} onClick={handleChoice} />
+            }
+          />
+          <Route path="movie-detail" element={<MovieDetail value={state} />} />
+          <Route
+            path="*"
+            element={
+              <div style={{ padding: '1rem' }}>
+                <p>There's nothing here!</p>
+              </div>
+            }
+          />
+        </Route>
+      </Routes>
+      <Footer />
+    </div>
   );
 };
 

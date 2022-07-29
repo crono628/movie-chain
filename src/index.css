@@ -9,3 +9,13 @@
   padding: 0;
   margin: 0;
 }
+
+.App {
+  height: calc(100vh - 64px);
+}
+
+#root,
+html {
+  height: calc(100vh - 64px);
+  background-color: cornflowerblue;
+}

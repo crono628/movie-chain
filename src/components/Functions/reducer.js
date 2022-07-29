@@ -13,7 +13,6 @@ const initialState = {
   queries: null,
   details: null,
   credits: null,
-  movie_credits: null,
   loading: false,
   page: 1,
   radio: { movie: true, person: false },
