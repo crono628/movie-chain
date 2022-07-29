@@ -6,6 +6,9 @@ const config = {
   searchPerson: 'search/person',
   searchMovie: 'search/movie',
   searchMulti: 'search/multi',
+  personMovieCredits: (choice) => `person/${choice}/movie_credits`,
+  personTvCredits: (choice) => `person/${choice}/tv_credits`,
+
   language: 'en-US',
   sortBy: 'popularity.desc',
 };

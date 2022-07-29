@@ -12,7 +12,7 @@ const Form = forwardRef((props, ref) => {
         className="w-full mt-5 rounded-xl px-4"
         ref={ref}
       />
-      <button className="text-white" type="button" onClick={onClick}>
+      <button className="text-white" type="reset" onClick={onClick}>
         clear
       </button>
     </form>

@@ -1,4 +1,4 @@
-import React, { useState, useRef, useReducer } from 'react';
+import React, { useRef, useReducer } from 'react';
 import { Route, Routes, useNavigate } from 'react-router-dom';
 import MovieDetail from './components/Detail/MovieDetail';
 import PersonDetail from './components/Detail/PersonDetail';
@@ -9,17 +9,11 @@ import config from './config';
 import { reducer, initialState } from './components/Functions/reducer';
 
 const App = () => {
-  const [queries, setQueries] = useState(null);
-  const [details, setDetails] = useState(null);
-  const [loading, setLoading] = useState(false);
-  // const [radio, setRadio] = useState({ movie: true, person: false });
-
   const [state, dispatch] = useReducer(reducer, initialState);
-
   const navigate = useNavigate();
   const inputRef = useRef('');
 
-  async function getQueries(page = 1) {
+  async function getQueries() {
     let data = [];
     const { movie } = state.radio;
     const { searchMovie, searchPerson, api, sortBy, baseUrl } = config;
@@ -27,21 +21,20 @@ const App = () => {
       const response = await fetch(
         `${baseUrl}${movie ? searchMovie : searchPerson}?api_key=${api}&query=${
           inputRef.current.value
-        }&page=${page}&sort_by=${sortBy}`
+        }&page=${state.page}&sort_by=${sortBy}`
       );
       const responseData = await response.json();
       data = responseData?.results;
-      setQueries(data);
+      dispatch({ type: 'update', payload: { key: 'queries', value: data } });
     } catch (error) {
       console.log(error);
     }
-    // console.log(data);
   }
 
   async function getDetails(choice) {
     const { movie } = state.radio;
     const { api, baseUrl } = config;
-    setLoading(true);
+    dispatch({ type: 'update', payload: { key: 'loading', value: true } });
     let dataArr = [];
     try {
       const response = await fetch(
@@ -52,9 +45,8 @@ const App = () => {
     } catch (error) {
       console.log(error);
     }
-    setDetails(dataArr);
-    setLoading(false);
-    // console.log(dataArr);
+    dispatch({ type: 'update', payload: { key: 'details', value: dataArr } });
+    dispatch({ type: 'update', payload: { key: 'loading', value: false } });
   }
 
   const handleSubmit = async (e) => {
@@ -79,21 +71,21 @@ const App = () => {
   };
 
   const handleChange = (e) => {
-    let copy = state.radio;
+    let copy = { ...state.radio };
     Object.keys(copy).forEach((key) => {
       copy[key] = false;
     });
     dispatch({
       type: 'update',
       payload: { key: 'radio', value: { ...copy, [e.target.value]: true } },
-    }),
-      handleClear();
+    });
   };
 
   const handleClear = () => {
     navigate(`/`);
     inputRef.current.value = '';
-    setQueries(null);
+    dispatch({ type: 'clear' });
+    console.log(state);
   };
 
   const handleValue = {
@@ -103,13 +95,6 @@ const App = () => {
     handleClear,
   };
 
-  const detailValue = {
-    details,
-    loading,
-    queries,
-  };
-
-  // console.log(state);
   return (
     <Routes>
       <Route
@@ -119,20 +104,18 @@ const App = () => {
       >
         <Route
           path="/search-person"
-          element={<SearchPerson queries={queries} onClick={handleChoice} />}
+          element={
+            <SearchPerson queries={state.queries} onClick={handleChoice} />
+          }
         />
-        <Route
-          path="/person-detail"
-          element={<PersonDetail value={detailValue} />}
-        />
+        <Route path="/person-detail" element={<PersonDetail value={state} />} />
         <Route
           path="search-movie"
-          element={<SearchMovie queries={queries} onClick={handleChoice} />}
+          element={
+            <SearchMovie queries={state.queries} onClick={handleChoice} />
+          }
         />
-        <Route
-          path="movie-detail"
-          element={<MovieDetail value={detailValue} />}
-        />
+        <Route path="movie-detail" element={<MovieDetail value={state} />} />
         <Route
           path="*"
           element={

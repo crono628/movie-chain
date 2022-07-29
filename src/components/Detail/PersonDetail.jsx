@@ -5,7 +5,7 @@ const PersonDetail = ({ value }) => {
   const { details, queries, loading } = value;
   // console.log(details);
   // console.log(queries);
-  let known = queries.find((item) => item.id === details.id);
+  // let known = queries.find((item) => item.id === details.id);
 
   return (
     !loading &&
