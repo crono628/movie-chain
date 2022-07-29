@@ -12,6 +12,7 @@ function reducer(state, { type, payload }) {
 const initialState = {
   queries: null,
   details: null,
+  credits: null,
   movie_credits: null,
   loading: false,
   page: 1,

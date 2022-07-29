@@ -31,21 +31,30 @@ const App = () => {
     }
   }
 
-  async function getDetails(choice) {
+  async function getDetailsAndCredits(choice) {
     const { movie } = state.radio;
-    const { api, baseUrl } = config;
+    const { api, baseUrl, personCombinedCredits, movieCredits } = config;
     dispatch({ type: 'update', payload: { key: 'loading', value: true } });
     let dataArr = [];
+    let creditArr = [];
     try {
       const response = await fetch(
         `${baseUrl}${movie ? 'movie' : 'person'}/${choice}?api_key=${api}`
       );
+      const creditResponse = await fetch(
+        `${baseUrl}${
+          movie ? movieCredits(choice) : personCombinedCredits(choice)
+        }?api_key=${api}`
+      );
       const data = await response.json();
+      const creditData = await creditResponse.json();
       dataArr = data;
+      creditArr = creditData;
     } catch (error) {
       console.log(error);
     }
     dispatch({ type: 'update', payload: { key: 'details', value: dataArr } });
+    dispatch({ type: 'update', payload: { key: 'credits', value: creditArr } });
     dispatch({ type: 'update', payload: { key: 'loading', value: false } });
   }
 
@@ -63,7 +72,7 @@ const App = () => {
   const handleChoice = async (e) => {
     const { movie } = state.radio;
     try {
-      await getDetails(e.target.dataset.id);
+      await getDetailsAndCredits(e.target.dataset.id);
       movie ? navigate('/movie-detail') : navigate('/person-detail');
     } catch (error) {
       console.log(error);
@@ -94,6 +103,8 @@ const App = () => {
     handleChange,
     handleClear,
   };
+
+  console.log(state);
 
   return (
     <Routes>
