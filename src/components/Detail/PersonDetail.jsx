@@ -14,7 +14,7 @@ const PersonDetail = ({ value }) => {
             src={`https://image.tmdb.org/t/p/w1280${details?.profile_path}`}
           />
         ) : (
-          <div className=" w-1/4 h-1/4 rounded-xl  mx-auto my-12">
+          <div className=" w-1/3 rounded-xl  mx-auto my-12">
             <NoPhotoIcon data={queries?.id} />
           </div>
         )}

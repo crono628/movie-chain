@@ -1,15 +1,26 @@
 import React, { useEffect, useState } from 'react';
-import config from '../../config';
 import NoPhotoIcon from '../SearchResults/NoPhotoIcon';
+import { fixDate } from '../Functions/fixDate';
+import { filterCastPopularity } from '../Functions/filterCastPopularity';
+import { useNavigate } from 'react-router-dom';
 
 const MovieDetail = ({ value }) => {
-  const { details, queries, loading } = value;
+  const { details, loading, credits } = value;
+  const [cast, setCast] = useState([]);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (credits) {
+      setCast(filterCastPopularity(credits.cast, 10));
+    }
+  }, [credits]);
+
   return (
     !loading && (
       <>
         {details?.poster_path || details?.backdrop_path ? (
           <img
-            className="w-1/4 rounded-xl mt-7"
+            className="w-1/3 rounded-xl mt-7"
             src={`https://image.tmdb.org/t/p/w1280${
               details.poster_path || details.backdrop_path
             }`}
@@ -19,12 +30,25 @@ const MovieDetail = ({ value }) => {
             <NoPhotoIcon data={details?.id} />
           </div>
         )}
-        <div className="mt-5 my-3 text-4xl">{details?.title}</div>
-        <div>
-          <div className="text-sm sm:text-base mt-1 flex-1 text-center">
-            {details?.release_date}
+        <div className="flex flex-col items-center max-w-lg">
+          <div className="mt-5  text-4xl">{details?.title}</div>
+          <div className="text-lg mb-3">"{details?.tagline}"</div>
+          <div>
+            <div className="text-sm sm:text-base mt-1 flex-1 text-center">
+              {'Release Date: ' + fixDate(details?.release_date)}
+            </div>
+            <div className="text-lg my-5"> {details?.overview}</div>
+            <div>Cast:</div>
+            <div className="text-xl">
+              {cast.map((actor, index) => (
+                <span className="cursor-pointer" key={actor.id}>
+                  {index === cast.length - 1
+                    ? `${actor.name}`
+                    : `${actor.name}, `}
+                </span>
+              ))}
+            </div>
           </div>
-          <div className="text-lg mt-5"> {details?.overview}</div>
         </div>
       </>
     )

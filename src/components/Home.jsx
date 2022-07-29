@@ -1,6 +1,6 @@
 import React, { forwardRef } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
-import ChainIcon from './ChainIcon';
+import chain from '../assets/chain.svg';
 import Form from './Form/Form';
 
 const Home = forwardRef((props, ref) => {
@@ -13,8 +13,7 @@ const Home = forwardRef((props, ref) => {
         onClick={() => navigate('/')}
         className="flex items-center pb-5 cursor-pointer"
       >
-        Movie
-        <ChainIcon /> Chain
+        Movie <img style={{ height: 50 }} src={chain} alt="" /> Chain
       </div>
       <Form
         handleSubmit={handleSubmit}
