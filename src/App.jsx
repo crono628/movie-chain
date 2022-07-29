@@ -6,7 +6,11 @@ import Home from './components/Home';
 import SearchMovie from './components/SearchResults/SearchMovie';
 import SearchPerson from './components/SearchResults/SearchPerson';
 import config from './config';
-import { reducer, initialState } from './components/Functions/reducer';
+import {
+  reducer,
+  initialState,
+  getDetailsAndCredits,
+} from './components/Functions/reducer';
 import Footer from './components/Footer';
 
 const App = () => {
@@ -32,38 +36,6 @@ const App = () => {
     }
   }
 
-  async function getDetailsAndCredits(choice) {
-    const { movie } = state.radio;
-    const { api, baseUrl, personCombinedCredits, movieCredits } = config;
-    dispatch({ type: 'update', payload: { key: 'loading', value: true } });
-    let dataDetails, dataCredits;
-    try {
-      const response = await fetch(
-        `${baseUrl}${movie ? 'movie' : 'person'}/${choice}?api_key=${api}`
-      );
-      const creditResponse = await fetch(
-        `${baseUrl}${
-          movie ? movieCredits(choice) : personCombinedCredits(choice)
-        }?api_key=${api}`
-      );
-      const data = await response.json();
-      const creditData = await creditResponse.json();
-      dataDetails = data;
-      dataCredits = creditData;
-    } catch (error) {
-      console.log(error);
-    }
-    dispatch({
-      type: 'update',
-      payload: { key: 'details', value: dataDetails },
-    });
-    dispatch({
-      type: 'update',
-      payload: { key: 'credits', value: dataCredits },
-    });
-    dispatch({ type: 'update', payload: { key: 'loading', value: false } });
-  }
-
   const handleSubmit = async (e) => {
     const { movie } = state.radio;
     e.preventDefault();
@@ -77,12 +49,24 @@ const App = () => {
 
   const handleChoice = async (e) => {
     const { movie } = state.radio;
+    dispatch({ type: 'update', payload: { key: 'loading', value: true } });
+
     try {
-      await getDetailsAndCredits(e.target.dataset.id);
+      await getDetailsAndCredits(e.target.dataset.id, state).then((data) => {
+        dispatch({
+          type: 'update',
+          payload: { key: 'details', value: data.dataDetails },
+        });
+        dispatch({
+          type: 'update',
+          payload: { key: 'credits', value: data.dataCredits },
+        });
+      });
       movie ? navigate('/movie-detail') : navigate('/person-detail');
     } catch (error) {
       console.log(error);
     }
+    dispatch({ type: 'update', payload: { key: 'loading', value: false } });
   };
 
   const handleChange = (e) => {
