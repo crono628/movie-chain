@@ -12,6 +12,7 @@ import {
   getDetailsAndCredits,
 } from './components/Functions/reducer';
 import Footer from './components/Footer';
+import { getPersonDetailsCredits } from './components/Functions/getDetailsCredits';
 
 const App = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -88,6 +89,29 @@ const App = () => {
     console.log(state);
   };
 
+  const handleMovieToPerson = (e) => {
+    console.log(e.target.dataset.id);
+    dispatch({
+      type: 'update',
+      payload: {
+        key: 'radioMovie',
+        value: !state.radioMovie,
+      },
+    });
+    getPersonDetailsCredits(e.target.dataset.id).then((data) => {
+      console.log(data);
+      dispatch({
+        type: 'update',
+        payload: { key: 'details', value: data.dataDetails },
+      });
+      dispatch({
+        type: 'update',
+        payload: { key: 'credits', value: data.dataCredits },
+      });
+    });
+    navigate('/person-detail');
+  };
+
   const handleValue = {
     handleSubmit,
     handleChoice,
@@ -121,7 +145,12 @@ const App = () => {
               <SearchMovie queries={state.queries} onClick={handleChoice} />
             }
           />
-          <Route path="movie-detail" element={<MovieDetail value={state} />} />
+          <Route
+            path="movie-detail"
+            element={
+              <MovieDetail onClick={handleMovieToPerson} value={state} />
+            }
+          />
           <Route
             path="*"
             element={
