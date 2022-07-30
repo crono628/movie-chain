@@ -4,7 +4,7 @@ import { fixDate } from '../Functions/fixDate';
 import { filterCastPopularity } from '../Functions/filterCastPopularity';
 import { useNavigate } from 'react-router-dom';
 
-const MovieDetail = ({ value }) => {
+const MovieDetail = ({ value, onClick }) => {
   const { details, loading, credits } = value;
   const [cast, setCast] = useState([]);
   const navigate = useNavigate();
@@ -39,9 +39,13 @@ const MovieDetail = ({ value }) => {
             </div>
             <div className="text-lg my-5"> {details?.overview}</div>
             <div>Cast:</div>
-            <div className="text-xl">
+            <div className="text-xl" onClick={onClick}>
               {cast.map((actor, index) => (
-                <span className="cursor-pointer" key={actor.id}>
+                <span
+                  className="cursor-pointer"
+                  key={actor.id}
+                  data-id={actor.id}
+                >
                   {index === cast.length - 1
                     ? `${actor.name}`
                     : `${actor.name}, `}

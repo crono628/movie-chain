@@ -20,13 +20,15 @@ const App = () => {
 
   async function getQueries() {
     let data = [];
-    const { movie } = state.radio;
+    const { radioMovie } = state;
     const { searchMovie, searchPerson, api, sortBy, baseUrl } = config;
     try {
       const response = await fetch(
-        `${baseUrl}${movie ? searchMovie : searchPerson}?api_key=${api}&query=${
-          inputRef.current.value
-        }&page=${state.page}&sort_by=${sortBy}`
+        `${baseUrl}${
+          radioMovie ? searchMovie : searchPerson
+        }?api_key=${api}&query=${inputRef.current.value}&page=${
+          state.page
+        }&sort_by=${sortBy}`
       );
       const responseData = await response.json();
       data = responseData?.results;
@@ -37,18 +39,18 @@ const App = () => {
   }
 
   const handleSubmit = async (e) => {
-    const { movie } = state.radio;
+    const { radioMovie } = state;
     e.preventDefault();
     try {
       await getQueries();
-      movie ? navigate('/search-movie') : navigate('/search-person');
+      radioMovie ? navigate('/search-movie') : navigate('/search-person');
     } catch (error) {
       console.log(error);
     }
   };
 
   const handleChoice = async (e) => {
-    const { movie } = state.radio;
+    const { radioMovie } = state;
     dispatch({ type: 'update', payload: { key: 'loading', value: true } });
 
     try {
@@ -62,21 +64,20 @@ const App = () => {
           payload: { key: 'credits', value: data.dataCredits },
         });
       });
-      movie ? navigate('/movie-detail') : navigate('/person-detail');
+      radioMovie ? navigate('/movie-detail') : navigate('/person-detail');
     } catch (error) {
       console.log(error);
     }
     dispatch({ type: 'update', payload: { key: 'loading', value: false } });
   };
 
-  const handleChange = (e) => {
-    let copy = { ...state.radio };
-    Object.keys(copy).forEach((key) => {
-      copy[key] = false;
-    });
-    dispatch({
+  const handleChange = async (e) => {
+    return dispatch({
       type: 'update',
-      payload: { key: 'radio', value: { ...copy, [e.target.value]: true } },
+      payload: {
+        key: 'radioMovie',
+        value: !state.radioMovie,
+      },
     });
   };
 
