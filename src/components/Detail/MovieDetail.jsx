@@ -3,44 +3,45 @@ import NoPhotoIcon from '../SearchResults/NoPhotoIcon';
 import { fixDate } from '../Functions/fixDate';
 import { filterCastPopularity } from '../Functions/filterCastPopularity';
 import { useNavigate } from 'react-router-dom';
+import { useAppContext } from '../AppContext';
 
-const MovieDetail = ({ value, onClick }) => {
-  const { details, loading, credits } = value;
-  const [cast, setCast] = useState([]);
-  const navigate = useNavigate();
+const MovieDetail = ({ onClick }) => {
+  const { state, dispatch } = useAppContext();
+  const { movieCast, loading, movieDetails } = state;
+  const [cast, setCast] = useState();
 
   useEffect(() => {
-    if (credits) {
-      setCast(filterCastPopularity(credits.cast, 10));
+    if (movieCast) {
+      setCast(filterCastPopularity(movieCast.cast, 10));
     }
-  }, [credits]);
+  }, [movieCast]);
 
   return (
     !loading && (
       <>
-        {details?.poster_path || details?.backdrop_path ? (
+        {movieDetails?.poster_path || movieDetails?.backdrop_path ? (
           <img
             className="w-1/3 rounded-xl mt-7"
             src={`https://image.tmdb.org/t/p/w1280${
-              details.poster_path || details.backdrop_path
+              movieDetails.poster_path || movieDetails.backdrop_path
             }`}
           />
         ) : (
           <div className=" w-1/4 h-1/4 rounded-xl  mx-auto my-12">
-            <NoPhotoIcon data={details?.id} />
+            <NoPhotoIcon data={movieDetails?.id} />
           </div>
         )}
         <div className="flex flex-col items-center max-w-lg">
-          <div className="mt-5  text-4xl">{details?.title}</div>
-          <div className="text-lg mb-3">"{details?.tagline}"</div>
+          <div className="mt-5  text-4xl">{movieDetails?.title}</div>
+          <div className="text-lg mb-3">"{movieDetails?.tagline}"</div>
           <div>
             <div className="text-sm sm:text-base mt-1 flex-1 text-center">
-              {'Release Date: ' + fixDate(details?.release_date)}
+              {'Release Date: ' + fixDate(movieDetails?.release_date)}
             </div>
-            <div className="text-lg my-5"> {details?.overview}</div>
+            <div className="text-lg my-5"> {movieDetails?.overview}</div>
             <div>Cast:</div>
             <div className="text-xl" onClick={onClick}>
-              {cast.map((actor, index) => (
+              {cast?.map((actor, index) => (
                 <span
                   className="cursor-pointer"
                   key={actor.id}

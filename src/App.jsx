@@ -1,70 +1,79 @@
-import React, { useRef, useReducer } from 'react';
+import React, { useRef } from 'react';
 import { Route, Routes, useNavigate } from 'react-router-dom';
 import MovieDetail from './components/Detail/MovieDetail';
 import PersonDetail from './components/Detail/PersonDetail';
 import Home from './components/Home';
 import SearchMovie from './components/SearchResults/SearchMovie';
 import SearchPerson from './components/SearchResults/SearchPerson';
-import config from './config';
-import {
-  reducer,
-  initialState,
-  getDetailsAndCredits,
-} from './components/Functions/reducer';
 import Footer from './components/Footer';
-import { getPersonDetailsCredits } from './components/Functions/getDetailsCredits';
+import {
+  getMovieDetailsCredits,
+  getPersonDetailsCredits,
+} from './components/Functions/getDetailsCredits';
+import { useAppContext } from './components/AppContext';
+import {
+  getMovieQueries,
+  getPersonQueries,
+} from './components/Functions/getQueries';
 
 const App = () => {
-  const [state, dispatch] = useReducer(reducer, initialState);
+  const { state, dispatch } = useAppContext();
   const navigate = useNavigate();
   const inputRef = useRef('');
 
-  async function getQueries() {
-    let data = [];
-    const { radioMovie } = state;
-    const { searchMovie, searchPerson, api, sortBy, baseUrl } = config;
-    try {
-      const response = await fetch(
-        `${baseUrl}${
-          radioMovie ? searchMovie : searchPerson
-        }?api_key=${api}&query=${inputRef.current.value}&page=${
-          state.page
-        }&sort_by=${sortBy}`
-      );
-      const responseData = await response.json();
-      data = responseData?.results;
-      dispatch({ type: 'update', payload: { key: 'queries', value: data } });
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
   const handleSubmit = async (e) => {
-    const { radioMovie } = state;
+    const { radioMovie, page } = state;
+    const searchVal = inputRef.current.value;
+    dispatch({ type: 'update', payload: { key: 'loading', value: true } });
     e.preventDefault();
     try {
-      await getQueries();
-      radioMovie ? navigate('/search-movie') : navigate('/search-person');
+      radioMovie
+        ? await getMovieQueries(searchVal, page).then((data) => {
+            dispatch({
+              type: 'update',
+              payload: { key: 'searchMovieQueries', value: data },
+            });
+          })
+        : await getPersonQueries(searchVal, page).then((data) => {
+            dispatch({
+              type: 'update',
+              payload: { key: 'searchPersonQueries', value: data },
+            });
+          });
     } catch (error) {
       console.log(error);
     }
+    radioMovie ? navigate('/search-movie') : navigate('/search-person');
+    dispatch({ type: 'update', payload: { key: 'loading', value: false } });
   };
 
   const handleChoice = async (e) => {
-    const { radioMovie } = state;
     dispatch({ type: 'update', payload: { key: 'loading', value: true } });
-
+    const { radioMovie } = state;
     try {
-      await getDetailsAndCredits(e.target.dataset.id, state).then((data) => {
-        dispatch({
-          type: 'update',
-          payload: { key: 'details', value: data.dataDetails },
-        });
-        dispatch({
-          type: 'update',
-          payload: { key: 'credits', value: data.dataCredits },
-        });
-      });
+      radioMovie
+        ? await getMovieDetailsCredits(e.target.dataset.id).then((data) => {
+            const { dataDetails, dataCredits } = data;
+            dispatch({
+              type: 'update',
+              payload: { key: 'movieDetails', value: dataDetails },
+            });
+            dispatch({
+              type: 'update',
+              payload: { key: 'movieCast', value: dataCredits },
+            });
+          })
+        : await getPersonDetailsCredits(e.target.dataset.id).then((data) => {
+            const { dataDetails, dataCredits } = data;
+            dispatch({
+              type: 'update',
+              payload: { key: 'personCredits', value: dataCredits },
+            });
+            dispatch({
+              type: 'update',
+              payload: { key: 'personDetails', value: dataDetails },
+            });
+          });
       radioMovie ? navigate('/movie-detail') : navigate('/person-detail');
     } catch (error) {
       console.log(error);
@@ -73,7 +82,7 @@ const App = () => {
   };
 
   const handleChange = async (e) => {
-    return dispatch({
+    dispatch({
       type: 'update',
       payload: {
         key: 'radioMovie',
@@ -91,22 +100,14 @@ const App = () => {
 
   const handleMovieToPerson = (e) => {
     console.log(e.target.dataset.id);
-    dispatch({
-      type: 'update',
-      payload: {
-        key: 'radioMovie',
-        value: !state.radioMovie,
-      },
-    });
     getPersonDetailsCredits(e.target.dataset.id).then((data) => {
-      console.log(data);
       dispatch({
         type: 'update',
-        payload: { key: 'details', value: data.dataDetails },
+        payload: { key: 'personDetails', value: data.dataDetails },
       });
       dispatch({
         type: 'update',
-        payload: { key: 'credits', value: data.dataCredits },
+        payload: { key: 'personCredits', value: data.dataCredits },
       });
     });
     navigate('/person-detail');
@@ -119,7 +120,7 @@ const App = () => {
     handleClear,
   };
 
-  console.log(state);
+  // console.log(state);
 
   return (
     <div className="mx-auto max-w-screen-lg flex flex-col h-screen justify-between ">
@@ -132,24 +133,25 @@ const App = () => {
           <Route
             path="/search-person"
             element={
-              <SearchPerson queries={state.queries} onClick={handleChoice} />
+              <SearchPerson
+                queries={state.searchPersonQueries}
+                onClick={handleChoice}
+              />
             }
           />
-          <Route
-            path="/person-detail"
-            element={<PersonDetail value={state} />}
-          />
+          <Route path="/person-detail" element={<PersonDetail />} />
           <Route
             path="search-movie"
             element={
-              <SearchMovie queries={state.queries} onClick={handleChoice} />
+              <SearchMovie
+                queries={state.searchMovieQueries}
+                onClick={handleChoice}
+              />
             }
           />
           <Route
             path="movie-detail"
-            element={
-              <MovieDetail onClick={handleMovieToPerson} value={state} />
-            }
+            element={<MovieDetail onClick={handleMovieToPerson} />}
           />
           <Route
             path="*"

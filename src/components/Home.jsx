@@ -10,7 +10,7 @@ const Home = forwardRef((props, ref) => {
   return (
     <div className="p-6 text-4xl flex justify-center items-center flex-col">
       <div
-        onClick={() => navigate('/')}
+        onClick={() => navigate('/', { replace: true })}
         className="flex items-center pb-5 cursor-pointer"
       >
         Movie <img style={{ height: 50 }} src={chain} alt="" /> Chain
