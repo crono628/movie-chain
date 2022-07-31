@@ -43,7 +43,7 @@ const MovieDetail = ({ onClick }) => {
             <div className="text-xl" onClick={onClick}>
               {cast?.map((actor, index) => (
                 <span
-                  className="cursor-pointer"
+                  className="cursor-pointer hover:bg-blue-500 hover:rounded-xl p-1 hover:p-1"
                   key={actor.id}
                   data-id={actor.id}
                 >
