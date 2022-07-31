@@ -17,7 +17,9 @@ const MovieDetail = ({ onClick }) => {
   }, [movieCast]);
 
   return (
-    !loading && (
+    !loading &&
+    movieCast &&
+    movieDetails && (
       <>
         {movieDetails?.poster_path || movieDetails?.backdrop_path ? (
           <img
@@ -36,7 +38,12 @@ const MovieDetail = ({ onClick }) => {
           <div className="text-lg mb-3">"{movieDetails?.tagline}"</div>
           <div>
             <div className="text-sm sm:text-base mt-1 flex-1 text-center">
-              {'Release Date: ' + fixDate(movieDetails?.release_date)}
+              {'Release Date: ' +
+                `${
+                  movieDetails.release_date
+                    ? fixDate(movieDetails?.release_date)
+                    : null
+                }`}
             </div>
             <div className="text-lg my-5"> {movieDetails?.overview}</div>
             <div>Cast:</div>

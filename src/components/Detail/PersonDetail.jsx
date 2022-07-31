@@ -3,7 +3,7 @@ import NoPhotoIcon from '../SearchResults/NoPhotoIcon';
 import { useAppContext } from '../AppContext';
 import { fixDate } from '../Functions/fixDate';
 
-const PersonDetail = () => {
+const PersonDetail = ({ onClick }) => {
   const { state } = useAppContext();
   console.log(state);
   const { personDetails, personCredits, loading } = state;
@@ -72,19 +72,20 @@ const PersonDetail = () => {
               </li>
               <li>
                 <span className="font-bold">Known For:</span>{' '}
-                <ul>
+                <ul onClick={onClick}>
                   {personCredits?.cast
                     .sort((a, b) => b.popularity - a.popularity)
                     .map((item, index) => {
-                      if (index < 20) {
-                        console.log(item.release_date);
+                      if (index < 20 && item.release_date && item.title) {
                         return (
-                          <li key={item.id}>
-                            {item.title}(
-                            {item.release_date
-                              ? fixDate(item.release_date)
-                              : null}
-                            )
+                          <li data-id={item.id} key={item.id}>
+                            {`${fixDate(item.release_date)} - `}
+                            <span
+                              data-id={item.id}
+                              className="cursor-pointer hover:bg-blue-500 hover:rounded-xl p-1 hover:p-1"
+                            >
+                              {item.title}
+                            </span>
                           </li>
                         );
                       }

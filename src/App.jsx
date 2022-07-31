@@ -99,7 +99,13 @@ const App = () => {
   };
 
   const handleMovieToPerson = (e) => {
-    console.log(e.target.dataset.id);
+    dispatch({
+      type: 'update',
+      payload: {
+        key: 'loading',
+        value: true,
+      },
+    });
     getPersonDetailsCredits(e.target.dataset.id).then((data) => {
       dispatch({
         type: 'update',
@@ -111,6 +117,30 @@ const App = () => {
       });
     });
     navigate('/person-detail');
+    dispatch({ type: 'update', payload: { key: 'loading', value: false } });
+  };
+
+  const handlePersonToMovie = (e) => {
+    console.log(e.target.dataset.id);
+    dispatch({
+      type: 'update',
+      payload: {
+        key: 'loading',
+        value: true,
+      },
+    });
+    getMovieDetailsCredits(e.target.dataset.id).then((data) => {
+      dispatch({
+        type: 'update',
+        payload: { key: 'movieDetails', value: data.dataDetails },
+      });
+      dispatch({
+        type: 'update',
+        payload: { key: 'movieCast', value: data.dataCredits },
+      });
+    });
+    navigate('/movie-detail');
+    dispatch({ type: 'update', payload: { key: 'loading', value: false } });
   };
 
   const handleValue = {
@@ -139,7 +169,10 @@ const App = () => {
               />
             }
           />
-          <Route path="/person-detail" element={<PersonDetail />} />
+          <Route
+            path="/person-detail"
+            element={<PersonDetail onClick={handlePersonToMovie} />}
+          />
           <Route
             path="search-movie"
             element={
