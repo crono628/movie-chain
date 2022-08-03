@@ -95,7 +95,6 @@ const App = () => {
     navigate(`/`);
     inputRef.current.value = '';
     dispatch({ type: 'clear' });
-    console.log(state);
   };
 
   const handleMovieToPerson = (e) => {
@@ -121,7 +120,7 @@ const App = () => {
   };
 
   const handlePersonToMovie = (e) => {
-    console.log(e.target.dataset.id);
+    // console.log(e.target.dataset.id);
     dispatch({
       type: 'update',
       payload: {

@@ -12,7 +12,7 @@ const MovieDetail = ({ onClick }) => {
 
   useEffect(() => {
     if (movieCast) {
-      let jobs = movieCast.crew.reduce((acc, curr) => {
+      let jobs = movieCast?.crew.reduce((acc, curr) => {
         if (
           curr.job === 'Director' ||
           curr.job === 'Producer' ||
@@ -23,8 +23,7 @@ const MovieDetail = ({ onClick }) => {
         }
         return acc;
       }, []);
-      console.log(jobs);
-      setCast(filterCastPopularity(movieCast.cast, 10));
+      setCast(filterCastPopularity(movieCast.cast, 5));
       setCrew(jobs);
     }
   }, [movieCast]);
@@ -129,7 +128,7 @@ const MovieDetail = ({ onClick }) => {
       </div>
     </>
   ) : (
-    <div>Loading...</div>
+    <div>There's nothing here!</div>
   );
 };
 
