@@ -5,63 +5,59 @@ import { fixDate } from '../Functions/fixDate';
 
 const PersonDetail = ({ onClick }) => {
   const { state } = useAppContext();
-  console.log(state);
   const { personDetails, personCredits, loading } = state;
   const [hidden, setHidden] = useState({ bio: false });
   const bioRef = useRef();
   useEffect(() => {
     if (personDetails) {
-      // console.log('personDetails', personDetails);
+      console.log('personDetails', personDetails);
       // console.log('personCredits', personCredits);
     }
   }, [personDetails]);
 
-  return (
-    !loading &&
-    personDetails !== null && (
-      <>
-        {personDetails?.profile_path ? (
-          <img
-            className="w-1/2 sm:w-1/4 rounded-xl mt-7"
-            src={`https://image.tmdb.org/t/p/w1280${personDetails?.profile_path}`}
-          />
-        ) : (
-          <div className=" w-1/3 rounded-xl  mx-auto my-12">
-            <NoPhotoIcon data={queries?.id} />
-          </div>
-        )}
-        <ul className="w-7/12">
-          <li>
-            <ul className="text-xl mt-7">
-              <li>
-                <span className="font-bold">Name:</span> {personDetails?.name}
-              </li>
-              <li>
-                <span className="font-bold">Birthday:</span>{' '}
-                {personDetails?.birthday
-                  ? fixDate(personDetails?.birthday)
-                  : 'N/A'}
-              </li>
-              <li>
-                <span className="font-bold">Place of Birth:</span>{' '}
-                {personDetails?.place_of_birth
-                  ? personDetails.place_of_birth
-                  : 'N/A'}
-              </li>
-              <li>
-                <span
-                  onClick={() => {
-                    setHidden({ ...hidden, bio: !hidden.bio });
-                  }}
-                  className="font-bold"
-                >
-                  Biography:
-                  {hidden.bio ? (
-                    <span className="text-xs"> (click to hide)</span>
-                  ) : (
-                    <span className="text-xs"> (click to show)</span>
-                  )}
-                </span>{' '}
+  return !loading && personDetails && personCredits ? (
+    <>
+      {personDetails?.profile_path ? (
+        <img
+          className="w-1/2 sm:w-1/4 rounded-xl mt-7"
+          src={`https://image.tmdb.org/t/p/w1280${personDetails?.profile_path}`}
+        />
+      ) : (
+        <div className=" w-1/3 rounded-xl  mx-auto my-12">
+          <NoPhotoIcon data={personDetails?.id} />
+        </div>
+      )}
+      <ul className="w-7/12">
+        <li>
+          <ul className="text-xl mt-7">
+            <li>
+              <span className="font-bold">Name:</span> {personDetails?.name}
+            </li>
+            <li>
+              <span className="font-bold">Birthday:</span>{' '}
+              {personDetails?.birthday
+                ? fixDate(personDetails?.birthday)
+                : 'N/A'}
+            </li>
+            <li>
+              <span className="font-bold">Place of Birth:</span>{' '}
+              {personDetails?.place_of_birth
+                ? personDetails.place_of_birth
+                : 'N/A'}
+            </li>
+            <li>
+              <span
+                onClick={() => setHidden({ ...hidden, bio: !hidden.bio })}
+                className="font-bold"
+              >
+                Biography:
+                {hidden.bio ? (
+                  <span className="font-normal text-xs"> (click to hide)</span>
+                ) : (
+                  <span className="font-normal text-xs"> (click to show)</span>
+                )}
+              </span>{' '}
+              <div>
                 {hidden.bio && (
                   <span ref={bioRef}>
                     {personDetails?.biography
@@ -69,33 +65,42 @@ const PersonDetail = ({ onClick }) => {
                       : 'N/A'}
                   </span>
                 )}
-              </li>
-              <li>
-                <span className="font-bold">Known For:</span>{' '}
-                <ul onClick={onClick}>
-                  {personCredits?.cast
-                    .sort((a, b) => b.popularity - a.popularity)
-                    .map((item, index) => {
-                      if (index < 20 && item.release_date && item.title) {
-                        return (
-                          <li data-id={item.id} key={item.id}>
-                            {`${fixDate(item.release_date)} - `}
-                            <span
-                              data-id={item.id}
-                              className="cursor-pointer hover:bg-blue-500 hover:rounded-xl p-1 hover:p-1"
-                            >
-                              {item.title}
-                            </span>
-                          </li>
-                        );
-                      }
-                    })}
-                </ul>
-              </li>
-            </ul>
-          </li>
+              </div>
+              {hidden.bio ? (
+                <div
+                  className="text-xs"
+                  onClick={() => setHidden({ ...hidden, bio: !hidden.bio })}
+                >
+                  (click to hide bio)
+                </div>
+              ) : null}
+            </li>
+            <li>
+              <span className="font-bold">Known For:</span>{' '}
+              <ul onClick={onClick}>
+                {personCredits?.cast
+                  .sort((a, b) => b.popularity - a.popularity)
+                  .map((item, index) => {
+                    if (index < 20 && item.release_date && item.title) {
+                      return (
+                        <li data-id={item.id} key={item.id}>
+                          {`${fixDate(item.release_date)} - `}
+                          <span
+                            data-id={item.id}
+                            className="cursor-pointer hover:bg-blue-500 hover:rounded-xl p-1 hover:p-1"
+                          >
+                            {item.title}
+                          </span>
+                        </li>
+                      );
+                    }
+                  })}
+              </ul>
+            </li>
+          </ul>
+        </li>
 
-          {/* <ul
+        {/* <ul
             className="nav nav-tabs flex flex-col md:flex-row flex-wrap list-none border-b-0 pl-0 mb-4"
             id="tabs-tab"
             role="tablist"
@@ -251,7 +256,7 @@ const PersonDetail = ({ onClick }) => {
             </div>
           </div> */}
 
-          {/* <li>
+        {/* <li>
             <ul className="text-xl mt-7">
               <li>
                 <ul className="font-bold">Known For:</ul>{' '}
@@ -270,9 +275,10 @@ const PersonDetail = ({ onClick }) => {
               </li>
             </ul>
           </li> */}
-        </ul>
-      </>
-    )
+      </ul>
+    </>
+  ) : (
+    <div>Loading...</div>
   );
 };
 

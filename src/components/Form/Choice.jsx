@@ -4,7 +4,7 @@ const Choice = ({ onChange }) => {
   return (
     <>
       <fieldset className="border border-solid border-gray-300 p-3 flex flex-col rounded-xl">
-        <legend className="text-base w-min">Choose</legend>
+        <legend className="text-base text-white w-min">Search</legend>
         <div className="flex justify-around ">
           <div>
             <label htmlFor="movie">Movie</label>
