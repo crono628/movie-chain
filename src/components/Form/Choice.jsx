@@ -3,14 +3,14 @@ import React from 'react';
 const Choice = ({ onChange }) => {
   return (
     <>
-      <fieldset className="border border-solid border-gray-300 p-3 flex flex-col rounded-xl">
+      <fieldset className="border border-solid border-gray-300 p-3 flex flex-col rounded-xl text-xl sm:text-4xl">
         <legend className="text-base text-white w-min">Search</legend>
-        <div className="flex justify-around ">
+        <div className="flex justify-around text-center">
           <div>
             <label htmlFor="movie">Movie</label>
             <input
               onChange={onChange}
-              className="appearance-none rounded-full h-4 w-4 border border-gray-300 bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-3 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
+              className="ml-2"
               type="radio"
               name="choice"
               id="movie"
@@ -22,7 +22,7 @@ const Choice = ({ onChange }) => {
             <label htmlFor="person">Person</label>
             <input
               onChange={onChange}
-              className="appearance-none rounded-full h-4 w-4 border border-gray-300 bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-3 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
+              className="ml-2"
               type="radio"
               name="choice"
               id="person"

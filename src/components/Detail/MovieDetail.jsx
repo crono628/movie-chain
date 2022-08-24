@@ -5,8 +5,9 @@ import { filterCastPopularity } from '../Functions/filterCastPopularity';
 import { useAppContext } from '../AppContext';
 
 const MovieDetail = ({ onClick }) => {
-  const { state } = useAppContext();
-  const { movieCast, loading, movieDetails } = state;
+  const { state, dispatch } = useAppContext();
+  const { movieCast, loading, movieDetails, movieSelection1, movieSelection2 } =
+    state;
   const [cast, setCast] = useState();
   const [crew, setCrew] = useState();
 
@@ -28,8 +29,23 @@ const MovieDetail = ({ onClick }) => {
     }
   }, [movieCast]);
 
+  const handleAdd = () => {
+    dispatch({
+      type: 'update',
+      payload: {
+        key: movieSelection1 === null ? 'movieSelection1' : 'movieSelection2',
+        value: movieDetails.id,
+      },
+    });
+  };
+
   return !loading && movieCast && movieDetails ? (
     <>
+      {movieSelection1 === null || movieSelection2 === null ? (
+        <button onClick={handleAdd}>Add</button>
+      ) : (
+        <button disabled>Add</button>
+      )}
       {movieDetails?.poster_path || movieDetails?.backdrop_path ? (
         <img
           className="w-1/3 rounded-xl mt-7"

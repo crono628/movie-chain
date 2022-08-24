@@ -26,6 +26,10 @@ const initialState = {
   radioMovie: true,
   loading: true,
   page: 1,
+  movieSelection1: null,
+  movieSelection2: null,
+  personSelection1: null,
+  personSelection2: null,
 };
 
 export { reducer, initialState };

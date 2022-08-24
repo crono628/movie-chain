@@ -98,6 +98,7 @@ const App = () => {
   };
 
   const handleMovieToPerson = (e) => {
+    console.log(e.target.dataset.id);
     dispatch({
       type: 'update',
       payload: {
@@ -120,7 +121,7 @@ const App = () => {
   };
 
   const handlePersonToMovie = (e) => {
-    // console.log(e.target.dataset.id);
+    console.log(e.target.dataset.id);
     dispatch({
       type: 'update',
       payload: {
