@@ -10,6 +10,7 @@ const MovieDetail = ({ onClick }) => {
     state;
   const [cast, setCast] = useState();
   const [crew, setCrew] = useState();
+  const trigger = !!movieSelection1 && !!movieSelection2;
 
   useEffect(() => {
     if (movieCast) {
@@ -30,22 +31,30 @@ const MovieDetail = ({ onClick }) => {
   }, [movieCast]);
 
   const handleAdd = () => {
+    console.log('movie1', movieSelection1);
     dispatch({
       type: 'update',
       payload: {
         key: movieSelection1 === null ? 'movieSelection1' : 'movieSelection2',
-        value: movieDetails.id,
+        value: {
+          title: movieDetails.title,
+          id: movieDetails.id,
+          cast: filterCastPopularity(movieCast.cast, 5),
+        },
       },
     });
   };
 
   return !loading && movieCast && movieDetails ? (
     <>
-      {movieSelection1 === null || movieSelection2 === null ? (
-        <button onClick={handleAdd}>Add</button>
-      ) : (
-        <button disabled>Add</button>
-      )}
+      <button
+        className="text-white hover:bg-blue-600  mx-auto w-fit mt-2  rounded-xl p-2"
+        onClick={handleAdd}
+        disabled={trigger}
+      >
+        add
+      </button>
+
       {movieDetails?.poster_path || movieDetails?.backdrop_path ? (
         <img
           className="w-1/3 rounded-xl mt-7"

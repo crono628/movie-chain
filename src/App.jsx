@@ -15,6 +15,7 @@ import {
   getMovieQueries,
   getPersonQueries,
 } from './components/Functions/getQueries';
+import MovieChainResults from './components/ChainResults/MovieChainResults';
 
 const App = () => {
   const { state, dispatch } = useAppContext();
@@ -186,6 +187,7 @@ const App = () => {
             path="movie-detail"
             element={<MovieDetail onClick={handleMovieToPerson} />}
           />
+          <Route path="movie-chain-results" element={<MovieChainResults />} />
           <Route
             path="*"
             element={
