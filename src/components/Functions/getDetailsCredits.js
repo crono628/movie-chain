@@ -18,6 +18,21 @@ async function getPersonDetailsCredits(choice) {
   return { dataDetails, dataCredits };
 }
 
+async function getPersonCredits(choice) {
+  const { api, baseUrl, personCombinedCredits } = config;
+  let dataCredits;
+  try {
+    const creditResponse = await fetch(
+      `${baseUrl}${personCombinedCredits(choice)}?api_key=${api}`
+    );
+    const creditData = await creditResponse.json();
+    dataCredits = creditData;
+  } catch (error) {
+    console.log(error);
+  }
+  return dataCredits;
+}
+
 async function getMovieDetailsCredits(choice) {
   const { api, baseUrl, movieCredits } = config;
   let dataDetails, dataCredits;
@@ -36,4 +51,4 @@ async function getMovieDetailsCredits(choice) {
   return { dataDetails, dataCredits };
 }
 
-export { getPersonDetailsCredits, getMovieDetailsCredits };
+export { getPersonCredits, getPersonDetailsCredits, getMovieDetailsCredits };

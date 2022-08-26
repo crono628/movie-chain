@@ -3,9 +3,12 @@ import NoPhotoIcon from '../SearchResults/NoPhotoIcon';
 import { fixDate } from '../Functions/fixDate';
 import { filterCastPopularity } from '../Functions/filterCastPopularity';
 import { useAppContext } from '../AppContext';
+import config from '../../config';
+import ActorsTopMovies from '../ChainResults/ActorsTopMovies';
 
 const MovieDetail = ({ onClick }) => {
   const { state, dispatch } = useAppContext();
+  const { withPeople } = config;
   const { movieCast, loading, movieDetails, movieSelection1, movieSelection2 } =
     state;
   const [cast, setCast] = useState();
@@ -150,6 +153,7 @@ const MovieDetail = ({ onClick }) => {
             </div>
           </div>
         </div>
+        <ActorsTopMovies arr={cast} />
       </div>
     </>
   ) : (

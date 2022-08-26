@@ -1,21 +1,39 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAppContext } from '../AppContext';
+import { combineObj } from '../Functions/combineCasts';
 
 const MovieChainResults = () => {
   const { state, dispatch } = useAppContext();
   const { movieSelection1, movieSelection2 } = state;
-  const [results, setResults] = useState([...combineSelections()]);
+  const [results, setResults] = useState();
+  const navigate = useNavigate();
 
-  console.log('results', results);
+  useEffect(() => {
+    if (movieSelection1 && movieSelection2) {
+      let combo = combineObj(movieSelection1.cast, movieSelection2.cast);
+      let reduced = combo.reduce(
+        (prev, curr) =>
+          prev.find((a) => a.id === curr.id) ? prev : [...prev, curr],
+        []
+      );
+      setResults(reduced);
+    } else {
+      navigate('/');
+    }
+  }, []);
 
-  function combineSelections() {
-    let combined = [];
-    combined.push(movieSelection1);
-    combined.push(movieSelection2);
-    return combined;
-  }
-
-  return <div>MovieChainResults</div>;
+  return (
+    <div>
+      {results?.map((item, index) => {
+        return (
+          <div key={index}>
+            {index + 1}. {item.name}
+          </div>
+        );
+      })}
+    </div>
+  );
 };
 
 export default MovieChainResults;

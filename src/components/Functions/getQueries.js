@@ -30,4 +30,17 @@ async function getPersonQueries(searchValue, page) {
   return data;
 }
 
-export { getMovieQueries, getPersonQueries };
+async function getWithPeople(choice) {
+  let data = [];
+  const { withPeople } = config;
+  try {
+    const response = await fetch(withPeople(choice));
+    const responseData = await response.json();
+    data = responseData.results;
+  } catch (error) {
+    console.log(error);
+  }
+  return data;
+}
+
+export { getMovieQueries, getPersonQueries, getWithPeople };
