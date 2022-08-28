@@ -8,6 +8,9 @@ function reducer(state, { type, payload }) {
     case 'update': {
       return { ...state, [payload.key]: payload.value };
     }
+    case 'set_multiple': {
+      return { ...state, ...payload };
+    }
     case 'clear': {
       return { ...initialState };
     }
@@ -30,6 +33,7 @@ const initialState = {
   movieSelection2: null,
   personSelection1: null,
   personSelection2: null,
+  currentRecommendations: null,
 };
 
 export { reducer, initialState };

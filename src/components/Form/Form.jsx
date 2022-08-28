@@ -6,7 +6,7 @@ const Form = forwardRef((props, ref) => {
 
   return (
     <form className="flex flex-col mx-5 h-56" onSubmit={handleSubmit}>
-      <Choice onChange={onChange} />
+      {/* <Choice onChange={onChange} /> */}
       <input
         placeholder="Search"
         className="w-full mt-5 rounded-xl px-4"

@@ -5,15 +5,16 @@ import { filterCastPopularity } from '../Functions/filterCastPopularity';
 import { useAppContext } from '../AppContext';
 import config from '../../config';
 import ActorsTopMovies from '../ChainResults/ActorsTopMovies';
+import MovieInfo from '../Info/MovieInfo';
 
 const MovieDetail = ({ onClick }) => {
   const { state, dispatch } = useAppContext();
-  const { withPeople } = config;
   const { movieCast, loading, movieDetails, movieSelection1, movieSelection2 } =
     state;
   const [cast, setCast] = useState();
   const [crew, setCrew] = useState();
-  const trigger = !!movieSelection1 && !!movieSelection2;
+  const [showRecommendations, setShowRecommendations] = useState(true);
+  // const trigger = !!movieSelection1 && !!movieSelection2;
 
   useEffect(() => {
     if (movieCast) {
@@ -50,13 +51,15 @@ const MovieDetail = ({ onClick }) => {
 
   return !loading && movieCast && movieDetails ? (
     <>
-      <button
+      {/* this is an undeveloped idea that compares
+    two movies. worth revisiting */}
+      {/* <button
         className="text-white hover:bg-blue-600  mx-auto w-fit mt-2  rounded-xl p-2"
         onClick={handleAdd}
         disabled={trigger}
       >
         add
-      </button>
+      </button> */}
 
       {movieDetails?.poster_path || movieDetails?.backdrop_path ? (
         <img
@@ -73,87 +76,18 @@ const MovieDetail = ({ onClick }) => {
       <div className="flex flex-col items-center max-w-lg">
         <div className="mt-5  text-4xl">{movieDetails?.title}</div>
         <div className="text-lg mb-3">"{movieDetails?.tagline}"</div>
-        <div>
-          <div className="text-sm sm:text-base mt-1 flex-1 text-center">
-            {'Release Date: ' +
-              `${
-                movieDetails.release_date
-                  ? fixDate(movieDetails?.release_date)
-                  : null
-              }`}
-          </div>
-          <div className="text-lg my-5"> {movieDetails?.overview}</div>
-          <div>Cast:</div>
-          <div className="text-xl" onClick={onClick}>
-            {cast?.map((actor, index) => (
-              <span
-                className="cursor-pointer hover:bg-blue-500 hover:rounded-xl p-1 hover:p-1"
-                key={actor.id}
-                data-id={actor.id}
-              >
-                {index === cast.length - 1
-                  ? `${actor.name}`
-                  : `${actor.name}, `}
-              </span>
-            ))}
-          </div>
-          <div>Crew:</div>
-          <div onClick={onClick}>
-            <div className="text-base">
-              {crew
-                ?.filter((person) => person.job === 'Director')
-                .map((person) => (
-                  <div
-                    className="cursor-pointer hover:bg-blue-500 hover:rounded-xl p-1 hover:p-1"
-                    key={person.id}
-                    data-id={person.id}
-                  >
-                    {person.job} - {person.name}
-                  </div>
-                ))}
-            </div>
-            <div className="text-base">
-              {crew
-                ?.filter((person) => person.job === 'Producer')
-                .map((person, index) => (
-                  <div
-                    className="cursor-pointer hover:bg-blue-500 hover:rounded-xl p-1 hover:p-1"
-                    key={person.id}
-                    data-id={person.id}
-                  >
-                    {person.job} - {person.name}
-                  </div>
-                ))}
-            </div>
-            <div className="text-base">
-              {crew
-                ?.filter((person) => person.job === 'Executive Producer')
-                .map((person, index) => (
-                  <div
-                    className="cursor-pointer hover:bg-blue-500 hover:rounded-xl p-1 hover:p-1"
-                    key={person.id}
-                    data-id={person.id}
-                  >
-                    {person.job} - {person.name}
-                  </div>
-                ))}
-            </div>
-            <div className="text-base">
-              {crew
-                ?.filter((person) => person.job === 'Writer')
-                .map((person, index) => (
-                  <div
-                    className="cursor-pointer hover:bg-blue-500 hover:rounded-xl p-1 hover:p-1"
-                    key={person.id}
-                    data-id={person.id}
-                  >
-                    {person.job} - {person.name}
-                  </div>
-                ))}
-            </div>
-          </div>
+        <div className="flex justify-around text-lg w-full my-6">
+          <button onClick={() => setShowRecommendations(true)}>
+            Recommendations
+          </button>
+          <button onClick={() => setShowRecommendations(false)}>
+            Movie info
+          </button>
         </div>
-        <ActorsTopMovies arr={cast} />
+        {!showRecommendations && (
+          <MovieInfo cast={cast} crew={crew} onClick={onClick} />
+        )}
+        {showRecommendations && <ActorsTopMovies arr={cast} />}
       </div>
     </>
   ) : (

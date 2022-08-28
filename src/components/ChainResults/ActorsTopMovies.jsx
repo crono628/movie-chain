@@ -1,15 +1,31 @@
 import React from 'react';
 import { useEffect } from 'react';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAppContext } from '../AppContext';
 import { getPersonCredits } from '../Functions/getDetailsCredits';
 
 const ActorsTopMovies = ({ arr }) => {
-  const [data, setData] = useState([]);
+  const { state, dispatch } = useAppContext();
+  const { currentRecommendations, loading } = state;
+  const navigate = useNavigate();
   useEffect(() => {
+    dispatch({
+      type: 'update',
+      payload: {
+        key: 'loading',
+        value: true,
+      },
+    });
     async function getThing() {
-      if (arr) {
+      if (arr && !currentRecommendations) {
+        console.log('call');
         let nums = arr?.map((item) => item.id);
         let mapCredits = nums?.map((num) => getPersonCredits(num));
+        if (mapCredits === undefined) {
+          return navigate('/');
+        }
+
         Promise.all(mapCredits)
           .then((data) =>
             data
@@ -18,16 +34,26 @@ const ActorsTopMovies = ({ arr }) => {
           )
           .then((final) => {
             let finalData = filteredTitles(final);
-            setData(finalData);
+            dispatch({
+              type: 'update',
+              payload: {
+                key: 'currentRecommendations',
+                value: finalData,
+              },
+            });
           });
       }
+      dispatch({
+        type: 'update',
+        payload: {
+          key: 'loading',
+          value: false,
+        },
+      });
     }
 
     getThing();
-  }, [arr]);
-  console.log('data', data);
-
-  // console.log('arr', filteredTitles(data));
+  }, [currentRecommendations, arr]);
 
   function filteredTitles(arr) {
     const result = [];
@@ -48,15 +74,19 @@ const ActorsTopMovies = ({ arr }) => {
   }
 
   return (
-    <div>
-      {data.map((item, index) => {
-        return (
-          <div key={index}>
-            <h2>{item?.title}</h2>
-          </div>
-        );
-      })}
-    </div>
+    <>
+      {!loading && (
+        <div>
+          {currentRecommendations?.map((item, index) => {
+            return (
+              <div key={index}>
+                <h2>{item?.title}</h2>
+              </div>
+            );
+          })}
+        </div>
+      )}
+    </>
   );
 };
 
