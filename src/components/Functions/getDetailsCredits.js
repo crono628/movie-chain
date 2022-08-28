@@ -19,12 +19,10 @@ async function getPersonDetailsCredits(choice) {
 }
 
 async function getPersonCredits(choice) {
-  const { api, baseUrl, personCombinedCredits } = config;
+  const { api, baseUrl, personMovieCredits } = config;
   let dataCredits;
   try {
-    const creditResponse = await fetch(
-      `${baseUrl}${personCombinedCredits(choice)}?api_key=${api}`
-    );
+    const creditResponse = await fetch(personMovieCredits(choice));
     const creditData = await creditResponse.json();
     dataCredits = creditData;
   } catch (error) {

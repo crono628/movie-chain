@@ -4,7 +4,6 @@ import { useState } from 'react';
 import { getPersonCredits } from '../Functions/getDetailsCredits';
 
 const ActorsTopMovies = ({ arr }) => {
-  const [people, setPeople] = useState(null);
   const [data, setData] = useState([]);
   useEffect(() => {
     async function getThing() {
@@ -14,48 +13,49 @@ const ActorsTopMovies = ({ arr }) => {
         Promise.all(mapCredits)
           .then((data) =>
             data
-              .map((item) => item.cast.filter((item) => item.popularity > 50))
+              .map((item) => item.cast.filter((item) => item.popularity > 40))
               .map((array) => array.sort((a, b) => b.popularity - a.popularity))
           )
-          .then((final) => setData(final));
+          .then((final) => {
+            let finalData = filteredTitles(final);
+            setData(finalData);
+          });
       }
     }
 
     getThing();
   }, [arr]);
-  console.log('data', condenseData(data));
+  console.log('data', data);
 
-  function condenseData(array) {
-    let newArray = array.map((item) => {
-      return item.reduce((acc, curr) => {
-        if (!acc.includes(curr.title)) {
-          acc.push(curr);
-        }
-        return acc;
-      }, []);
-    });
+  // console.log('arr', filteredTitles(data));
 
-    let finalArray = newArray
-      .flat()
-      .sort((a, b) => b.popularity - a.popularity)
-      .reduce((acc, curr) => {
-        let key = 'title';
-        if (!acc.some((item) => item[key] === curr[key])) {
-          acc.push(curr);
-        }
+  function filteredTitles(arr) {
+    const result = [];
+    for (let i = 0; i < arr.length; i++) {
+      for (let j = 0; j < arr[i].length; j++) {
+        result.push(arr[i][j]);
+      }
+    }
 
-        return acc;
-      }, []);
-
-    return finalArray;
+    const filtered = result.reduce((acc, curr) => {
+      const x = acc.find((item) => item.title === curr.title);
+      if (!x) {
+        return acc.concat([curr]);
+      }
+      return acc;
+    }, []);
+    return filtered;
   }
 
   return (
     <div>
-      HERE
-      {/* {data?.map((movie, index) => {
-        return movie.map((titles) => <div key={index}>{titles.title}</div>);
-      })} */}
+      {data.map((item, index) => {
+        return (
+          <div key={index}>
+            <h2>{item?.title}</h2>
+          </div>
+        );
+      })}
     </div>
   );
 };

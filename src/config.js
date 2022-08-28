@@ -11,6 +11,10 @@ const config = {
   searchPerson: 'search/person',
   searchMovie: 'search/movie',
   searchMulti: 'search/multi',
+  personMovieCredits: (choice) =>
+    `https://api.themoviedb.org/3/person/${choice}/movie_credits?api_key=${
+      import.meta.env.VITE_API_KEY
+    }&language=en-US`,
   personCombinedCredits: (choice) => `person/${choice}/combined_credits`,
   movieCredits: (choice) => `movie/${choice}/credits`,
   language: 'en-US',
