@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import NoPhotoIcon from '../SearchResults/NoPhotoIcon';
-import { fixDate } from '../Functions/fixDate';
 import { filterCastPopularity } from '../Functions/filterCastPopularity';
 import { useAppContext } from '../AppContext';
-import config from '../../config';
 import ActorsTopMovies from '../ChainResults/ActorsTopMovies';
 import MovieInfo from '../Info/MovieInfo';
 
@@ -29,7 +27,7 @@ const MovieDetail = ({ onClick }) => {
         }
         return acc;
       }, []);
-      setCast(filterCastPopularity(movieCast.cast, 5));
+      setCast(filterCastPopularity(movieCast.cast, 1));
       setCrew(jobs);
     }
   }, [movieCast]);
@@ -63,7 +61,7 @@ const MovieDetail = ({ onClick }) => {
 
       {movieDetails?.poster_path || movieDetails?.backdrop_path ? (
         <img
-          className="w-1/3 rounded-xl mt-7"
+          className="w-1/2 sm:w-1/3 rounded-xl "
           src={`https://image.tmdb.org/t/p/w1280${
             movieDetails.poster_path || movieDetails.backdrop_path
           }`}
@@ -73,14 +71,26 @@ const MovieDetail = ({ onClick }) => {
           <NoPhotoIcon data={movieDetails?.id} />
         </div>
       )}
-      <div className="flex flex-col items-center max-w-lg">
+      <div className="flex flex-col items-center w-full">
         <div className="mt-5  text-4xl">{movieDetails?.title}</div>
-        <div className="text-lg mb-3">"{movieDetails?.tagline}"</div>
-        <div className="flex justify-around text-lg w-full my-6">
-          <button onClick={() => setShowRecommendations(true)}>
+        {movieDetails?.tagline && (
+          <div className="text-lg mb-3">"{movieDetails?.tagline}"</div>
+        )}
+        <div className="flex justify-around text-sm sm:text-lg w-full my-6 relative">
+          <button
+            className={
+              showRecommendations ? 'bg-blue-500 p-2 rounded-lg' : 'p-2'
+            }
+            onClick={() => setShowRecommendations(true)}
+          >
             Recommendations
           </button>
-          <button onClick={() => setShowRecommendations(false)}>
+          <button
+            className={
+              !showRecommendations ? 'bg-blue-500 p-2 rounded-lg' : 'p-2'
+            }
+            onClick={() => setShowRecommendations(false)}
+          >
             Movie info
           </button>
         </div>
@@ -91,7 +101,7 @@ const MovieDetail = ({ onClick }) => {
       </div>
     </>
   ) : (
-    <div>There's nothing here!</div>
+    <div></div>
   );
 };
 

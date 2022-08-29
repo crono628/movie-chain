@@ -17,8 +17,9 @@
 #root,
 html {
   height: calc(100vh - 64px);
-  background-color: cornflowerblue;
+  background-color: rgb(39, 85, 171);
   scroll-behavior: smooth;
+  color: aliceblue;
 }
 
 button:disabled {

@@ -23,6 +23,7 @@ const App = () => {
   const inputRef = useRef('');
 
   const handleSubmit = async (e) => {
+    dispatch({ type: 'clear' });
     const { radioMovie, page } = state;
     const searchVal = inputRef.current.value;
     dispatch({ type: 'update', payload: { key: 'loading', value: true } });
@@ -122,7 +123,7 @@ const App = () => {
   };
 
   const handlePersonToMovie = (e) => {
-    console.log(e.target.dataset.id);
+    // dispatch({ type: 'clear' });
     dispatch({
       type: 'update',
       payload: {
@@ -188,14 +189,7 @@ const App = () => {
             element={<MovieDetail onClick={handleMovieToPerson} />}
           />
           <Route path="movie-chain-results" element={<MovieChainResults />} />
-          <Route
-            path="*"
-            element={
-              <div style={{ padding: '1rem' }}>
-                <p>There's nothing here!</p>
-              </div>
-            }
-          />
+          <Route path="*" element={<div style={{ padding: '1rem' }}></div>} />
         </Route>
       </Routes>
       <Footer />

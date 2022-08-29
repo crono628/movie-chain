@@ -10,7 +10,7 @@ const Home = forwardRef((props, ref) => {
   const { state } = useAppContext();
   const { movieSelection1, movieSelection2 } = state;
   const { handleChange, handleClear, handleSubmit } = props.value;
-  const titleClasses = ' flex items-center pb-5 cursor-pointer';
+  const titleClasses = ' flex items-center pb-5';
   const trigger = !!movieSelection1 && !!movieSelection2;
 
   useEffect(() => {
@@ -39,10 +39,10 @@ const Home = forwardRef((props, ref) => {
       >
         Movie <img style={{ height: 50 }} src={chain} alt="" /> Chain
       </div>
-      <div className="flex justify-evenly text-center h-16 text-sm sm:text-xl w-full">
+      {/* <div className="flex justify-evenly text-center h-16 text-sm sm:text-xl w-full">
         <div>{movieSelection1?.title}</div> {trigger && '+'}
         <div>{movieSelection2?.title}</div>
-      </div>
+      </div> */}
       <Form
         handleSubmit={handleSubmit}
         onChange={handleChange}

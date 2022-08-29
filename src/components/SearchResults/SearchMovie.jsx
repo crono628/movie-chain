@@ -9,7 +9,7 @@ const SearchMovie = ({ queries, onClick }) => {
           <div
             key={query.id}
             onClick={onClick}
-            className="text-sm m-2 flex flex-col border-2 rounded-xl"
+            className="text-sm m-2 flex flex-col border-2 rounded-xl cursor-pointer"
           >
             {query?.backdrop_path || query.poster_path ? (
               <img

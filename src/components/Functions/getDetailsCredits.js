@@ -19,7 +19,7 @@ async function getPersonDetailsCredits(choice) {
 }
 
 async function getPersonCredits(choice) {
-  const { api, baseUrl, personMovieCredits } = config;
+  const { personMovieCredits } = config;
   let dataCredits;
   try {
     const creditResponse = await fetch(personMovieCredits(choice));

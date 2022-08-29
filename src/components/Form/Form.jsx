@@ -5,11 +5,11 @@ const Form = forwardRef((props, ref) => {
   const { onChange, handleSubmit, onClick } = props;
 
   return (
-    <form className="flex flex-col mx-5 h-56" onSubmit={handleSubmit}>
+    <form className="flex flex-col mx-5 mb-10" onSubmit={handleSubmit}>
       {/* <Choice onChange={onChange} /> */}
       <input
         placeholder="Search"
-        className="w-full mt-5 rounded-xl px-4"
+        className="w-full mt-5 rounded-xl px-4 text-black"
         ref={ref}
       />
       <button

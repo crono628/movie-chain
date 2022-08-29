@@ -1,11 +1,15 @@
 import React from 'react';
 import { useEffect } from 'react';
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAppContext } from '../AppContext';
-import { getPersonCredits } from '../Functions/getDetailsCredits';
+import {
+  getMovieDetailsCredits,
+  getPersonCredits,
+} from '../Functions/getDetailsCredits';
 
 const ActorsTopMovies = ({ arr }) => {
+  console.log('arr', arr);
+
   const { state, dispatch } = useAppContext();
   const { currentRecommendations, loading } = state;
   const navigate = useNavigate();
@@ -19,17 +23,17 @@ const ActorsTopMovies = ({ arr }) => {
     });
     async function getThing() {
       if (arr && !currentRecommendations) {
-        console.log('call');
         let nums = arr?.map((item) => item.id);
         let mapCredits = nums?.map((num) => getPersonCredits(num));
         if (mapCredits === undefined) {
           return navigate('/');
         }
+        console.log('call');
 
         Promise.all(mapCredits)
           .then((data) =>
             data
-              .map((item) => item.cast.filter((item) => item.popularity > 40))
+              .map((item) => item.cast.filter((item) => item.popularity > 20))
               .map((array) => array.sort((a, b) => b.popularity - a.popularity))
           )
           .then((final) => {
@@ -72,14 +76,56 @@ const ActorsTopMovies = ({ arr }) => {
     }, []);
     return filtered;
   }
+  // console.log('curr', currentRecommendations);
+
+  const handleNextMovie = async (e) => {
+    dispatch({ type: 'clear' });
+    dispatch({
+      type: 'set_multiple',
+      payload: {
+        loading: true,
+        currentRecommendations: null,
+      },
+    });
+    try {
+      await getMovieDetailsCredits(e.currentTarget.dataset.movie).then(
+        (data) => {
+          const { dataDetails, dataCredits } = data;
+          dispatch({
+            type: 'update',
+            payload: { key: 'movieDetails', value: dataDetails },
+          });
+          dispatch({
+            type: 'update',
+            payload: { key: 'movieCast', value: dataCredits },
+          });
+        }
+      );
+    } catch (error) {
+      console.log(error);
+    }
+
+    dispatch({
+      type: 'update',
+      payload: {
+        key: 'loading',
+        value: false,
+      },
+    });
+  };
 
   return (
     <>
       {!loading && (
-        <div>
-          {currentRecommendations?.map((item, index) => {
+        <div className="text-lg">
+          {currentRecommendations?.map((item) => {
             return (
-              <div key={index}>
+              <div
+                onClick={handleNextMovie}
+                data-movie={item.id}
+                key={item.id}
+                className="cursor-pointer hover:bg-blue-500 hover:rounded-xl p-1 hover:p-1"
+              >
                 <h2>{item?.title}</h2>
               </div>
             );
