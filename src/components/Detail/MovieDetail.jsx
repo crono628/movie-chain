@@ -27,7 +27,7 @@ const MovieDetail = ({ onClick }) => {
         }
         return acc;
       }, []);
-      setCast(filterCastPopularity(movieCast.cast, 1));
+      setCast(filterCastPopularity(movieCast.cast, 5));
       setCrew(jobs);
     }
   }, [movieCast]);
