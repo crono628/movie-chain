@@ -39,7 +39,7 @@ const ActorsTopMovies = ({ arr }) => {
             return data.map((item) => ({
               actor: item.actor,
               movies: item.credits.cast
-                .filter((item) => item.popularity > 20)
+                .filter((item) => item.popularity > 5)
                 .sort((a, b) => b.popularity - a.popularity),
             }));
           })

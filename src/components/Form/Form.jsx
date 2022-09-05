@@ -7,17 +7,30 @@ const Form = forwardRef((props, ref) => {
   return (
     <form className="flex flex-col mx-5 mb-10" onSubmit={handleSubmit}>
       {/* <Choice onChange={onChange} /> */}
-      <input
-        placeholder="Search"
-        className="w-full mt-5 rounded-xl px-4 text-black"
-        ref={ref}
-      />
+      <div className="flex relative ">
+        <div className="flex relative">
+          <input
+            type="text"
+            placeholder="Search for a movie"
+            ref={ref}
+            id="search"
+            name="search"
+            className="w-full bg-white rounded text-base text-gray-700 py-1 px-3"
+          />
+          <button
+            type="submit"
+            className=" ml-2  text-white bg-blue-900 border-0 py-3 px-6 focus:outline-none hover:bg-blue-800 rounded text-sm"
+          >
+            Search
+          </button>
+        </div>
+      </div>
       <button
-        className="text-white hover:bg-blue-600  mx-auto w-fit mt-2  rounded-xl p-2"
+        className="text-white text-base mt-2 px-4 bg-blue-900 hover:bg-blue-800  mx-auto w-fit rounded p-2"
         type="reset"
         onClick={onClick}
       >
-        reset
+        Reset
       </button>
     </form>
   );

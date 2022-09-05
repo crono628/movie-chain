@@ -10,7 +10,7 @@ const Home = forwardRef((props, ref) => {
   const { state } = useAppContext();
   const { movieSelection1, movieSelection2 } = state;
   const { handleChange, handleClear, handleSubmit } = props.value;
-  const titleClasses = ' flex items-center pb-5';
+  const titleClasses = 'title flex items-center pb-5';
   const trigger = !!movieSelection1 && !!movieSelection2;
 
   useEffect(() => {

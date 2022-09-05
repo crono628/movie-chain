@@ -3,10 +3,17 @@ import tmdb from '../assets/tmdb.svg';
 
 const Footer = () => {
   return (
-    <footer className="w-full  bg-blue-900 px-4 py-2 h-12 ">
+    <footer className="w-full sticky bottom-0 bg-blue-900 px-4 py-2 h-12 ">
       <span className="flex items-center text-white justify-between text-xs">
         <div className="flex items-center gap-2">
-          <div>© MD 2022</div>
+          <a
+            href="https://www.michaeldesantis.dev"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-white"
+          >
+            © michaeldesantis.dev 2022
+          </a>
           <a
             href="https://github.com/crono628/movie-chain"
             target="_blank"

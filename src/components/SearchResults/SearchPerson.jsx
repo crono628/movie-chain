@@ -4,7 +4,7 @@ import NoPhotoIcon from './NoPhotoIcon';
 
 const SearchPerson = ({ queries, onClick }) => {
   return (
-    <div className="p-3 text-4xl  flex justify-center items-center flex-col">
+    <div className="p-3 text-4xl flex justify-center items-center flex-col">
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-1">
         {queries?.map((query) => (
           <div
