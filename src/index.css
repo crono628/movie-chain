@@ -21,7 +21,7 @@
 
 #root,
 html {
-  height: calc(100vh - 64px);
+  height: 100vh;
   background-color: rgb(39, 113, 251);
   scroll-behavior: smooth;
   color: aliceblue;

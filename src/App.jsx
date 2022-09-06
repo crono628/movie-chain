@@ -156,7 +156,7 @@ const App = () => {
   // console.log(state);
 
   return (
-    <div className="mx-auto max-w-screen-lg  h-screen justify-between ">
+    <div className="mx-auto max-w-screen-lg flex flex-col h-screen justify-between ">
       <Routes>
         <Route
           exact
@@ -193,8 +193,8 @@ const App = () => {
           <Route path="*" element={<div style={{ padding: '1rem' }}></div>} />
         </Route>
       </Routes>
-      <Footer />
       <ScrollButton below={250} />
+      <Footer />
     </div>
   );
 };

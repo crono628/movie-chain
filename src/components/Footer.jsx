@@ -3,7 +3,7 @@ import tmdb from '../assets/tmdb.svg';
 
 const Footer = () => {
   return (
-    <footer className="w-full sticky bottom-0 bg-blue-900 px-1 sm:px-4 py-2 h-12 ">
+    <div className="w-full sticky bottom-0 bg-blue-900 px-1 sm:px-4 py-2 h-12 ">
       <span className="flex items-center text-white justify-between text-xs">
         <div className="flex items-center gap-2">
           <a
@@ -35,13 +35,13 @@ const Footer = () => {
           href="https://www.themoviedb.org"
           target="_blank"
           rel="noopener noreferrer"
-          className="text-[10px] sm:text-xs"
+          className="text-[10px] sm:text-xs flex flex-col items-center"
         >
-          Data and images provided by
+          <div>Data and images provided by</div>
           <img className="ml-2 w-36" src={tmdb} alt="tmdb logo" />
         </a>
       </span>
-    </footer>
+    </div>
   );
 };
 
