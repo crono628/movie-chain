@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import { Route, Routes, useNavigate } from 'react-router-dom';
-import MovieDetail from './components/Detail/MovieDetail';
+import MovieRecAndInfo from './components/Detail/MovieRecAndInfo';
 import PersonDetail from './components/Detail/PersonDetail';
 import Home from './components/Home';
 import SearchMovie from './components/SearchResults/SearchMovie';
@@ -16,6 +16,7 @@ import {
   getPersonQueries,
 } from './components/Functions/getQueries';
 import MovieChainResults from './components/ChainResults/MovieChainResults';
+import ScrollButton from './components/ScrollButton';
 
 const App = () => {
   const { state, dispatch } = useAppContext();
@@ -155,7 +156,7 @@ const App = () => {
   // console.log(state);
 
   return (
-    <div className="mx-auto max-w-screen-lg flex flex-col h-screen justify-between ">
+    <div className="mx-auto max-w-screen-lg  h-screen justify-between ">
       <Routes>
         <Route
           exact
@@ -186,13 +187,14 @@ const App = () => {
           />
           <Route
             path="movie-detail"
-            element={<MovieDetail onClick={handleMovieToPerson} />}
+            element={<MovieRecAndInfo onClick={handleMovieToPerson} />}
           />
           <Route path="movie-chain-results" element={<MovieChainResults />} />
           <Route path="*" element={<div style={{ padding: '1rem' }}></div>} />
         </Route>
       </Routes>
       <Footer />
+      <ScrollButton below={250} />
     </div>
   );
 };

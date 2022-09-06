@@ -21,7 +21,7 @@ const MovieInfo = ({ cast, crew, onClick }) => {
         <div className="text-xl" onClick={onClick}>
           {cast?.map((actor, index) => (
             <span
-              className="cursor-pointer hover:bg-blue-500 hover:rounded-xl p-1 hover:p-1"
+              className="cursor-pointer hover:bg-blue-800 hover:rounded p-1 hover:p-1"
               key={actor.id}
               data-id={actor.id}
             >
@@ -36,7 +36,7 @@ const MovieInfo = ({ cast, crew, onClick }) => {
               ?.filter((person) => person.job === 'Director')
               .map((person) => (
                 <div
-                  className="cursor-pointer hover:bg-blue-500 hover:rounded-xl p-1 hover:p-1"
+                  className="cursor-pointer hover:bg-blue-800 hover:rounded p-1 hover:p-1"
                   key={person.id}
                   data-id={person.id}
                 >
@@ -49,7 +49,7 @@ const MovieInfo = ({ cast, crew, onClick }) => {
               ?.filter((person) => person.job === 'Producer')
               .map((person) => (
                 <div
-                  className="cursor-pointer hover:bg-blue-500 hover:rounded-xl p-1 hover:p-1"
+                  className="cursor-pointer hover:bg-blue-800 hover:rounded p-1 hover:p-1"
                   key={person.id}
                   data-id={person.id}
                 >
@@ -62,7 +62,7 @@ const MovieInfo = ({ cast, crew, onClick }) => {
               ?.filter((person) => person.job === 'Executive Producer')
               .map((person) => (
                 <div
-                  className="cursor-pointer hover:bg-blue-500 hover:rounded-xl p-1 hover:p-1"
+                  className="cursor-pointer hover:bg-blue-800 hover:rounded p-1 hover:p-1"
                   key={person.id}
                   data-id={person.id}
                 >
@@ -75,7 +75,7 @@ const MovieInfo = ({ cast, crew, onClick }) => {
               ?.filter((person) => person.job === 'Writer')
               .map((person) => (
                 <div
-                  className="cursor-pointer hover:bg-blue-500 hover:rounded-xl p-1 hover:p-1"
+                  className="cursor-pointer hover:bg-blue-800 hover:rounded p-1 hover:p-1"
                   key={person.id}
                   data-id={person.id}
                 >

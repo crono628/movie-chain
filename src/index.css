@@ -22,7 +22,7 @@
 #root,
 html {
   height: calc(100vh - 64px);
-  background-color: rgb(39, 85, 171);
+  background-color: rgb(39, 113, 251);
   scroll-behavior: smooth;
   color: aliceblue;
 }

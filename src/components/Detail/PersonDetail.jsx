@@ -23,11 +23,11 @@ const PersonDetail = ({ onClick }) => {
       {personDetails?.profile_path ? (
         // person photo
         <img
-          className="w-1/2 sm:w-1/4 rounded-xl mt-7"
+          className="w-1/2 sm:w-1/4 rounded mt-7"
           src={`https://image.tmdb.org/t/p/w1280${personDetails?.profile_path}`}
         />
       ) : (
-        <div className=" w-1/3 rounded-xl  mx-auto my-12">
+        <div className=" w-1/3 rounded  mx-auto my-12">
           <NoPhotoIcon data={personDetails?.id} />
         </div>
       )}
@@ -90,7 +90,7 @@ const PersonDetail = ({ onClick }) => {
                         data-id={item.id}
                         key={item.id + index}
                         onClick={onClick}
-                        className="cursor-pointer hover:bg-blue-500 hover:rounded-xl p-1 hover:p-1"
+                        className="cursor-pointer hover:bg-blue-800 hover:rounded p-1 hover:p-1"
                       >
                         {item.release_date
                           ? `${fixDate(item.release_date)} - `

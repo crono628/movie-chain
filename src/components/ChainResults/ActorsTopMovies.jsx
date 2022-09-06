@@ -148,7 +148,7 @@ const ActorsTopMovies = ({ arr }) => {
   return (
     <>
       {!loading && (
-        <div className="text-lg">
+        <div className="text-base flex flex-col items-center">
           {currentRecommendations?.map((item, index) => {
             return (
               <div
@@ -156,7 +156,7 @@ const ActorsTopMovies = ({ arr }) => {
                 onClick={handleThing}
                 data-movie={item.id}
                 key={item.id}
-                className="cursor-pointer hover:bg-blue-500 hover:rounded-xl p-1 hover:p-1"
+                className="cursor-pointer hover:bg-blue-800 rounded p-2 px-4"
               >
                 <div>{item.movie}</div>
               </div>
@@ -195,5 +195,5 @@ const ActorsTopMovies = ({ arr }) => {
 const overlayStyle =
   'text-black fixed z-40 w-screen h-screen inset-0 bg-gray-900 bg-opacity-60';
 const modalStyle =
-  'max-h-60 fixed z-50 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 bg-white rounded-md px-8 py-6 space-y-5 drop-shadow-lg ';
+  'max-h-60 fixed z-50 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 bg-white rounded px-8 py-6 space-y-5 drop-shadow-lg ';
 export default ActorsTopMovies;

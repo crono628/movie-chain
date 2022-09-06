@@ -10,18 +10,18 @@ const SearchPerson = ({ queries, onClick }) => {
           <div
             onClick={onClick}
             key={query.id}
-            className="text-sm m-2 flex flex-col border-2 rounded-xl"
+            className="text-sm m-2 flex flex-col border-2 rounded"
           >
             {query.profile_path ? (
               <img
-                className="rounded-xl"
+                className="rounded"
                 data-id={query.id}
                 src={`https://image.tmdb.org/t/p/w1280${query?.profile_path}`}
               />
             ) : (
               <div
                 data-id={query.id}
-                className="flex-1 h-full rounded-xl  mx-auto"
+                className="flex-1 h-full rounded  mx-auto"
               >
                 <NoPhotoIcon data={query.id} />
               </div>

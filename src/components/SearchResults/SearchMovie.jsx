@@ -9,18 +9,18 @@ const SearchMovie = ({ queries, onClick }) => {
           <div
             key={query.id}
             onClick={onClick}
-            className="text-sm m-2 flex flex-col border-2 rounded-xl cursor-pointer"
+            className="text-sm m-2 flex flex-col border-2 rounded cursor-pointer"
           >
             {query?.backdrop_path || query.poster_path ? (
               <img
-                className="rounded-xl"
+                className="rounded"
                 data-id={query.id}
                 src={`https://image.tmdb.org/t/p/w1280${
                   query.poster_path || query.backdrop_path
                 }`}
               />
             ) : (
-              <div data-id={query.id} className="flex-1  rounded-xl  mx-auto">
+              <div data-id={query.id} className="flex-1  rounded  mx-auto">
                 <NoPhotoIcon data={query.id} />
               </div>
             )}
