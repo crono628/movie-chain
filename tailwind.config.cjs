@@ -41,7 +41,7 @@ module.exports = {
         },
       },
       animation: {
-        btnIn: 'btnIn  0.25s ease-in forwards ',
+        btnIn: 'btnIn  0.25s ease-in both ',
         btnOut: 'btnOut  0.25s ease-out forwards ',
         highlightIn: 'highlightIn  0.25s ease-in forwards ',
         highlightOut: 'highlightOut  0.25s ease-out forwards ',
