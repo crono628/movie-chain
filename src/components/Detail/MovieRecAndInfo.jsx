@@ -6,9 +6,8 @@ import ActorsTopMovies from '../ChainResults/ActorsTopMovies';
 import MovieInfo from '../Info/MovieInfo';
 
 const MovieRecAndInfo = ({ onClick }) => {
-  const { state, dispatch } = useAppContext();
-  const { movieCast, loading, movieDetails, movieSelection1, movieSelection2 } =
-    state;
+  const { state, dispatch, loading } = useAppContext();
+  const { movieCast, movieDetails, movieSelection1, movieSelection2 } = state;
   const [cast, setCast] = useState();
   const [crew, setCrew] = useState();
   const [showRecommendations, setShowRecommendations] = useState(true);

@@ -4,8 +4,8 @@ import { useAppContext } from '../AppContext';
 import { fixDate } from '../Functions/fixDate';
 
 const PersonDetail = ({ onClick }) => {
-  const { state } = useAppContext();
-  const { personDetails, personCredits, loading } = state;
+  const { state, loading } = useAppContext();
+  const { personDetails, personCredits } = state;
   const [hidden, setHidden] = useState({ bio: false });
   const [work, setWork] = useState([]);
   const bioRef = useRef();

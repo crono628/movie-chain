@@ -8,19 +8,13 @@ import {
 } from '../Functions/getDetailsCredits';
 
 const ActorsTopMovies = ({ arr }) => {
-  const { state, dispatch } = useAppContext();
-  const { currentRecommendations, loading } = state;
+  const { state, dispatch, loading, setLoading } = useAppContext();
+  const { currentRecommendations } = state;
   const [showLinks, setShowLinks] = useState(false);
   const [links, setLinks] = useState([]);
   const navigate = useNavigate();
   useEffect(() => {
-    dispatch({
-      type: 'update',
-      payload: {
-        key: 'loading',
-        value: true,
-      },
-    });
+    setLoading(true);
     async function getThing() {
       if (arr && !currentRecommendations) {
         let nums = arr?.map((item) => ({ id: item.id, name: item.name }));
@@ -54,13 +48,7 @@ const ActorsTopMovies = ({ arr }) => {
             });
           });
       }
-      dispatch({
-        type: 'update',
-        payload: {
-          key: 'loading',
-          value: false,
-        },
-      });
+      setLoading(false);
     }
 
     getThing();
@@ -101,10 +89,10 @@ const ActorsTopMovies = ({ arr }) => {
 
   const handleNextMovie = async (e) => {
     dispatch({ type: 'clear' });
+    setLoading(true);
     dispatch({
       type: 'set_multiple',
       payload: {
-        loading: true,
         currentRecommendations: null,
       },
     });
@@ -126,13 +114,7 @@ const ActorsTopMovies = ({ arr }) => {
       console.log(error);
     }
 
-    dispatch({
-      type: 'update',
-      payload: {
-        key: 'loading',
-        value: false,
-      },
-    });
+    setLoading(false);
   };
 
   const handleThing = (e) => {
@@ -148,7 +130,7 @@ const ActorsTopMovies = ({ arr }) => {
   return (
     <>
       {!loading && (
-        <div className="text-base flex flex-col items-center">
+        <div className="text-base flex flex-col max-w-xs sm:max-w-md items-start">
           {currentRecommendations?.map((item, index) => {
             return (
               <div

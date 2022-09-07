@@ -26,17 +26,15 @@ const ScrollButton = ({ below }) => {
   };
 
   return (
-    <>
-      <button
-        className={`${
-          show ? 'animate-btnIn ' : !show && loaded ? 'animate-btnOut ' : ''
-        } opacity-0 w-20 z-50 sticky bottom-16  float-right mb-5 mr-5  bg-blue-900 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded-full`}
-        onClick={handleClick}
-        onAnimationEnd={() => setLoaded(true)}
-      >
-        Top
-      </button>
-    </>
+    <button
+      className={`${
+        show ? 'animate-btnIn ' : !show && loaded ? 'animate-btnOut ' : ''
+      } opacity-0 w-20 z-50 sticky bottom-16 ml-auto mb-5 mr-5  bg-blue-900 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded-full`}
+      onClick={handleClick}
+      onAnimationEnd={() => setLoaded(true)}
+    >
+      Top
+    </button>
   );
 };
 

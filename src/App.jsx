@@ -19,7 +19,7 @@ import MovieChainResults from './components/ChainResults/MovieChainResults';
 import ScrollButton from './components/ScrollButton';
 
 const App = () => {
-  const { state, dispatch } = useAppContext();
+  const { state, dispatch, loading, setLoading } = useAppContext();
   const navigate = useNavigate();
   const inputRef = useRef('');
 
@@ -27,7 +27,7 @@ const App = () => {
     dispatch({ type: 'clear' });
     const { radioMovie, page } = state;
     const searchVal = inputRef.current.value;
-    dispatch({ type: 'update', payload: { key: 'loading', value: true } });
+    setLoading(true);
     e.preventDefault();
     try {
       radioMovie
@@ -47,11 +47,11 @@ const App = () => {
       console.log(error);
     }
     radioMovie ? navigate('/search-movie') : navigate('/search-person');
-    dispatch({ type: 'update', payload: { key: 'loading', value: false } });
+    setLoading(false);
   };
 
   const handleChoice = async (e) => {
-    dispatch({ type: 'update', payload: { key: 'loading', value: true } });
+    setLoading(true);
     const { radioMovie } = state;
     try {
       radioMovie
@@ -81,7 +81,7 @@ const App = () => {
     } catch (error) {
       console.log(error);
     }
-    dispatch({ type: 'update', payload: { key: 'loading', value: false } });
+    setLoading(false);
   };
 
   const handleChange = async (e) => {
@@ -102,13 +102,7 @@ const App = () => {
 
   const handleMovieToPerson = (e) => {
     console.log(e.target.dataset.id);
-    dispatch({
-      type: 'update',
-      payload: {
-        key: 'loading',
-        value: true,
-      },
-    });
+    setLoading(true);
     getPersonDetailsCredits(e.target.dataset.id).then((data) => {
       dispatch({
         type: 'update',
@@ -120,18 +114,12 @@ const App = () => {
       });
     });
     navigate('/person-detail');
-    dispatch({ type: 'update', payload: { key: 'loading', value: false } });
+    setLoading(false);
   };
 
   const handlePersonToMovie = (e) => {
     // dispatch({ type: 'clear' });
-    dispatch({
-      type: 'update',
-      payload: {
-        key: 'loading',
-        value: true,
-      },
-    });
+    setLoading(true);
     getMovieDetailsCredits(e.target.dataset.id).then((data) => {
       dispatch({
         type: 'update',
@@ -143,7 +131,7 @@ const App = () => {
       });
     });
     navigate('/movie-detail');
-    dispatch({ type: 'update', payload: { key: 'loading', value: false } });
+    setLoading(false);
   };
 
   const handleValue = {

@@ -32,7 +32,7 @@ const Home = forwardRef((props, ref) => {
   };
 
   return (
-    <div className="p-6 text-4xl flex justify-center items-center flex-col">
+    <div className="px-2 pt-4 text-4xl flex justify-center items-center flex-col">
       <div
         onClick={handleResults}
         className={ready ? 'pulsate' + titleClasses : titleClasses}
